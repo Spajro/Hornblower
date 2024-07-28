@@ -29,6 +29,12 @@ pub struct Line {
     pub second: Point,
 }
 
+pub struct Triangle {
+    pub first: Point,
+    pub second: Point,
+    pub third: Point,
+}
+
 impl Point {
     pub fn new(x: usize, y: usize) -> Self {
         Point {
@@ -52,8 +58,7 @@ impl Point {
 
 impl Paintable for Point {
     fn paint(self, buffer: &mut Buffer) {
-        println!("{} {}",self.x,self.y);
-        buffer.buffer[self.x + self.y * buffer.width] = Self::from_u8_rgb(128,0,0);
+        buffer.buffer[self.x + self.y * buffer.width] = Self::from_u8_rgb(128, 0, 0);
     }
 }
 
@@ -113,20 +118,34 @@ impl AddAssign for Vector {
 impl Paintable for Line {
     fn paint(self, buffer: &mut Buffer) {
         let distance = self.second.as_vector() - self.first.as_vector();
-        let m = (distance.y as f32) / (distance.x as f32);
         let lower;
         let greater;
-        if self.first.x < self.second.x {
-            greater = self.second;
-            lower = self.first;
+
+        if distance.x == 0 {
+            if self.first.y < self.second.y {
+                greater = self.second;
+                lower = self.first;
+            } else {
+                greater = self.first;
+                lower = self.second;
+            }
+            for y in lower.y..greater.y + 1 {
+                Point::new(lower.x, y).paint(buffer);
+            }
+
         } else {
-            greater = self.first;
-            lower = self.second;
-        }
-        println!("M {}", m);
-        for x in lower.x..greater.x + 1 {
-            let y = (m * ((x - lower.x) as f32) + (lower.y as f32)) as usize;
-            Point::new(x, y).paint(buffer);
+            let m = (distance.y as f32) / (distance.x as f32);
+            if self.first.x < self.second.x {
+                greater = self.second;
+                lower = self.first;
+            } else {
+                greater = self.first;
+                lower = self.second;
+            }
+            for x in lower.x..greater.x + 1 {
+                let y = (m * ((x - lower.x) as f32) + (lower.y as f32)) as usize;
+                Point::new(x, y).paint(buffer);
+            }
         }
     }
 }
@@ -137,6 +156,24 @@ impl Buffer {
             width,
             height,
             buffer: vec![0; width * height],
+        }
+    }
+}
+
+impl Paintable for Triangle {
+    fn paint(self, buffer: &mut Buffer) {
+        Line::new(self.first, self.second).paint(buffer);
+        Line::new(self.second, self.third).paint(buffer);
+        Line::new(self.first, self.third).paint(buffer);
+    }
+}
+
+impl Triangle {
+    pub fn new(first: Point, second: Point, third: Point) -> Self {
+        Triangle {
+            first,
+            second,
+            third,
         }
     }
 }
