@@ -8,6 +8,7 @@ use crate::status::Status;
 pub struct Engine {
     pub objects: Vec<Status>,
     tick_rate: u32,
+    scale: u32,
 }
 
 impl Engine {
@@ -18,10 +19,11 @@ impl Engine {
         self.objects.push(object)
     }
 
-    pub fn new(tick_rate: u32) -> Self {
+    pub fn new(tick_rate: u32, scale: u32) -> Self {
         Engine {
             objects: vec![],
             tick_rate,
+            scale,
         }
     }
 }
@@ -39,7 +41,9 @@ impl Paintable for Engine {
     fn paint(&self, buffer: &mut Buffer) {
         self.objects.iter()
             .map(|status| Triangle::equilateral(
-                Point::new(status.position.x as usize, status.position.y as usize),
+                Point::new(
+                    (status.position.x as f32 / self.scale as f32) as usize,
+                    (status.position.y as f32 / self.scale as f32) as usize),
                 Vector::new(status.speed.x as i32, status.speed.y as i32).normalize(),
                 10))
             .for_each(|triangle| triangle.paint(buffer));

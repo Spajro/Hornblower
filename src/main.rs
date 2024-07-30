@@ -19,8 +19,9 @@ fn main() {
     const HEIGHT: usize = 360;
     const TICK_RATE:u32=4;
     const FRAME_TIME:u32=1000/TICK_RATE;
+    const SCALE:u32=4;
 
-    let mut engine = Engine::new(TICK_RATE);
+    let mut engine = Engine::new(TICK_RATE,SCALE);
     let mut window = Window::new(
         "Test - ESC to exit",
         WIDTH,
