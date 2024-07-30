@@ -3,9 +3,6 @@ use std::time::Duration;
 use minifb::{Key, Window, WindowOptions};
 use crate::engine::Engine;
 use crate::graphics::buffer::{Buffer, Paintable};
-use crate::graphics::point::Point;
-use crate::graphics::triangle::Triangle;
-use crate::graphics::vector::Vector;
 use crate::status::Status;
 use crate::vector2d::Vector2D;
 
@@ -22,6 +19,7 @@ fn main() {
     const HEIGHT: usize = 360;
     const TICK_RATE:u32=4;
     const FRAME_TIME:u32=1000/TICK_RATE;
+
     let mut engine = Engine::new(TICK_RATE);
     let mut window = Window::new(
         "Test - ESC to exit",
@@ -29,7 +27,6 @@ fn main() {
         HEIGHT,
         WindowOptions::default(),
     ).unwrap_or_else(|e| { panic!("{}", e); });
-
     window.set_target_fps(60);
 
     let mut status1 = Status::new();
@@ -44,22 +41,15 @@ fn main() {
     engine.register(status2);
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
-        println!("|{}|", engine);
+        println!("|\n{}|", engine);
         sleep(Duration::from_millis(FRAME_TIME as u64));
 
         let mut buffer = Buffer::new(WIDTH, HEIGHT);
         engine.update();
-
-
-        engine.objects.iter()
-            .map(|status| Triangle::equilateral(
-                Point::new(status.position.x.clone() as usize, status.position.y.clone() as usize),
-                Vector::new(status.speed.x.clone() as i32, status.speed.y.clone() as i32).normalize(),
-                10))
-            .for_each(|triangle|triangle.paint(&mut buffer));
+        engine.paint(&mut buffer);
 
         window
-            .update_with_buffer(&buffer.buffer, WIDTH, HEIGHT)
+            .update_with_buffer(&buffer.buffer, buffer.width, buffer.height)
             .unwrap();
     }
 }
