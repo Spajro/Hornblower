@@ -33,7 +33,7 @@ impl Square {
 }
 
 impl Paintable for Square{
-    fn paint(self, buffer: &mut Buffer) {
+    fn paint(&self, buffer: &mut Buffer) {
         Line::new(self.first, self.second).paint(buffer);
         Line::new(self.second, self.third).paint(buffer);
         Line::new(self.third, self.fourth).paint(buffer);

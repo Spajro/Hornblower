@@ -5,7 +5,7 @@ pub struct Buffer {
 }
 
 pub trait Paintable {
-    fn paint(self, buffer: &mut Buffer);
+    fn paint(&self, buffer: &mut Buffer);
 }
 
 impl Buffer {

@@ -14,7 +14,7 @@ pub struct Line {
 }
 
 impl Paintable for Line {
-    fn paint(self, buffer: &mut Buffer) {
+    fn paint(&self, buffer: &mut Buffer) {
         let distance = self.second.as_vector() - self.first.as_vector();
         let lower;
         let greater;
