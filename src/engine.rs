@@ -39,11 +39,13 @@ impl Display for Engine {
 
 impl Paintable for Engine {
     fn paint(&self, buffer: &mut Buffer) {
+        let width=buffer.width;
+        let height=buffer.height;
         self.objects.iter()
             .map(|status| Triangle::equilateral(
                 Point::new(
-                    (status.position.x as f32 / self.scale as f32) as usize,
-                    (status.position.y as f32 / self.scale as f32) as usize),
+                    (status.position.x as f32 / self.scale as f32) as usize + (width / 2),
+                    (status.position.y as f32 / self.scale as f32) as usize + (height / 2)),
                 Vector::new(status.speed.x as i32, status.speed.y as i32).normalize(),
                 10))
             .for_each(|triangle| triangle.paint(buffer));
