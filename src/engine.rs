@@ -3,19 +3,21 @@ use crate::status::Status;
 
 pub struct Engine {
     pub objects: Vec<Status>,
+    tick_rate: u32,
 }
 
 impl Engine {
     pub fn update(&mut self) {
-        self.objects.iter_mut().for_each(|o| o.update())
+        self.objects.iter_mut().for_each(|o| o.update(self.tick_rate))
     }
     pub fn register(&mut self, object: Status) {
         self.objects.push(object)
     }
 
-    pub fn new() -> Self {
+    pub fn new(tick_rate: u32) -> Self {
         Engine {
             objects: vec![],
+            tick_rate,
         }
     }
 }

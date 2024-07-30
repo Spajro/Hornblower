@@ -27,9 +27,10 @@ impl Status {
         self.acceleration = acceleration;
     }
 
-    pub fn update(&mut self) {
-        self.position += self.speed;
-        self.speed += self.acceleration;
+    pub fn update(&mut self,tick_rate:u32) {
+        let percent=1.0/(tick_rate as f32);
+        self.position += self.speed*percent;
+        self.speed += self.acceleration*percent;
     }
 }
 

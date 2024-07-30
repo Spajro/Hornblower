@@ -54,6 +54,17 @@ impl ops::Mul<i64> for Vector2D {
     }
 }
 
+impl ops::Mul<f32> for Vector2D {
+    type Output = Vector2D;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+        Vector2D {
+            x: (self.x as f32 * rhs) as i64,
+            y: (self.y as f32 * rhs) as i64,
+        }
+    }
+}
+
 impl ops::Sub<Vector2D> for Vector2D {
     type Output = Vector2D;
 
