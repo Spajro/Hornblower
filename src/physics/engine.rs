@@ -3,6 +3,7 @@ use std::fmt::{Display, Formatter};
 
 use crate::physics::collider::{CircleCollider2D, Collider};
 use crate::graphics::buffer::{Buffer, Paintable};
+use crate::graphics::directed_triangle::DirectedTriangle;
 use crate::graphics::point::Point;
 use crate::graphics::triangle::Triangle;
 use crate::graphics::vector::Vector;
@@ -70,14 +71,12 @@ impl Paintable for Engine {
         let width = buffer.width;
         let height = buffer.height;
         self.status_map.iter()
-            .for_each(|(id, status)| println!("C{} {} {}", id, (status.position.x as f32 / self.scale as f32), (status.position.y as f32 / self.scale as f32)));
-        self.status_map.iter()
-            .map(|(id, status)| Triangle::equilateral(
+            .map(|(id, status)| DirectedTriangle::equilateral(
                 Point::new(
                     ((status.position.x as f32 / self.scale as f32) + ((width / 2) as f32)) as usize,
                     ((status.position.y as f32 / self.scale as f32) + ((height / 2) as f32)) as usize),
                 Vector::new(status.speed.x as i32, status.speed.y as i32).normalize(),
-                10))
+                20))
             .filter(|r| r.is_ok())
             .map(|r|r.unwrap())
             .for_each(|triangle| triangle.paint(buffer));

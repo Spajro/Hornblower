@@ -6,3 +6,4 @@ pub mod triangle;
 pub mod vector;
 pub mod square;
 pub mod circle;
+pub mod directed_triangle;
