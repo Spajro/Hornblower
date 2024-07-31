@@ -2,6 +2,8 @@ use minifb::{Key, Window, WindowOptions};
 use crate::physics::collider::CircleCollider2D;
 use crate::physics::engine::Engine;
 use crate::graphics::buffer::{Buffer, Paintable};
+use crate::graphics::circle::Circle;
+use crate::graphics::point::Point;
 use crate::physics::status::Status;
 use crate::physics::vector2d::Vector2D;
 
@@ -35,11 +37,14 @@ fn main() {
     engine.register(2, status2);
     engine.register_collider(2, CircleCollider2D::new(20));
 
+    let circle=Circle::new(Point::new(200,200),100);
+
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         println!("|\n{}|", engine);
 
         let mut buffer = Buffer::new(WIDTH, HEIGHT);
+        circle.paint(&mut buffer);
         engine.update();
         let collisions = engine.check_collisions();
         if !collisions.is_empty() {

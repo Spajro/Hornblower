@@ -5,3 +5,4 @@ pub mod point;
 pub mod triangle;
 pub mod vector;
 pub mod square;
+pub mod circle;
