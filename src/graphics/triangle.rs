@@ -26,20 +26,25 @@ impl Triangle {
         }
     }
 
-    pub fn equilateral(center: Point, direction: Normalized, length: u32) -> Self {
+    pub fn equilateral(center: Point, direction: Normalized, length: u32) -> Result<Self, &'static str> {
         let radius = ((length as f32) / 3_f32.sqrt()) as i32;
-        let tv = center.as_vector();
-        let v1 = tv + (direction * radius);
-        let v2 = tv + (direction * radius).rotate(3.14 * 2.0 / 3.0);
-        let v3 = tv + (direction * radius).rotate(3.14 * 4.0 / 3.0);
+        let v = center.as_vector();
+        let p1 = Point::from_vector(v + (direction * radius));
+        let p2 = Point::from_vector(v + (direction * radius).rotate(3.14 * 2.0 / 3.0));
+        let p3 = Point::from_vector(v + (direction * radius).rotate(3.14 * 4.0 / 3.0));
 
-        let first = Point::from_vector(v1).unwrap();
-        let second = Point::from_vector(v2).unwrap();
-        let third = Point::from_vector(v3).unwrap();
-        Triangle {
-            first,
-            second,
-            third,
-        }
+        return if p1.is_err() {
+            Err(p1.err().unwrap())
+        } else if p2.is_err() {
+            Err(p2.err().unwrap())
+        } else if p3.is_err() {
+            Err(p3.err().unwrap())
+        } else {
+            Ok(Triangle {
+                first: p1.unwrap(),
+                second: p2.unwrap(),
+                third: p3.unwrap(),
+            })
+        };
     }
 }

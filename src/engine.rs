@@ -38,15 +38,14 @@ impl Engine {
     pub fn check_collisions(&self) -> Vec<(u32, u32)> {
         let mut result = HashSet::new();
         for (id1, collider1) in &self.collider_map {
-            let s_position=self.status_map.get(id1).unwrap().position;
+            let s_position = self.status_map.get(id1).unwrap().position;
             for (id2, collider2) in &self.collider_map {
-                let c_position=self.status_map.get(id2).unwrap().position;
+                let c_position = self.status_map.get(id2).unwrap().position;
                 if collider1.collide(collider2, &s_position, &c_position) && id1 != id2 {
-                    if id1<id2 {
+                    if id1 < id2 {
                         result.insert((id1, id2));
-                    }
-                    else{
-                        result.insert((id2,id1));
+                    } else {
+                        result.insert((id2, id1));
                     }
                 }
             }
@@ -71,12 +70,16 @@ impl Paintable for Engine {
         let width = buffer.width;
         let height = buffer.height;
         self.status_map.iter()
+            .for_each(|(id, status)| println!("C{} {} {}", id, (status.position.x as f32 / self.scale as f32), (status.position.y as f32 / self.scale as f32)));
+        self.status_map.iter()
             .map(|(id, status)| Triangle::equilateral(
                 Point::new(
-                    (status.position.x as f32 / self.scale as f32) as usize + (width / 2),
-                    (status.position.y as f32 / self.scale as f32) as usize + (height / 2)),
+                    ((status.position.x as f32 / self.scale as f32) + ((width / 2) as f32)) as usize,
+                    ((status.position.y as f32 / self.scale as f32) + ((height / 2) as f32)) as usize),
                 Vector::new(status.speed.x as i32, status.speed.y as i32).normalize(),
                 10))
+            .filter(|r| r.is_ok())
+            .map(|r|r.unwrap())
             .for_each(|triangle| triangle.paint(buffer));
     }
 }

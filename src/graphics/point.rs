@@ -42,7 +42,7 @@ impl Point {
 impl Paintable for Point {
     fn paint(&self, buffer: &mut Buffer) {
         if self.x < buffer.width && self.y < buffer.height {
-            buffer.buffer[self.x + (self.y - 1) * buffer.width] = Self::from_u8_rgb(128, 0, 0);
+            buffer.buffer[self.x + self.y * buffer.width] = Self::from_u8_rgb(128, 0, 0);
         }
     }
 }
