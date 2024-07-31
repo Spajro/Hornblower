@@ -12,6 +12,7 @@ mod vector2d;
 mod normalized2d;
 
 mod graphics;
+mod collider;
 
 
 fn main() {
@@ -34,12 +35,12 @@ fn main() {
     status1.accelerate(Vector2D::new(10, 0));
     status1.position.x = 100;
     status1.position.y = 100;
-    engine.register(status1);
+    engine.register(1,status1);
     let mut status2 = Status::new();
     status2.accelerate(Vector2D::new(0, 10));
     status2.position.x = 200;
     status2.position.y = 200;
-    engine.register(status2);
+    engine.register(2,status2);
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         println!("|\n{}|", engine);
