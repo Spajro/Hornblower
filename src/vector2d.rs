@@ -13,8 +13,8 @@ impl Vector2D {
         Vector2D { x, y }
     }
 
-    pub(crate) fn length(&self) -> i64 {
-        ((self.x *self.x + self.y * self.y) as f64).sqrt() as i64
+    pub fn length(&self) -> i64 {
+        ((self.x * self.x + self.y * self.y) as f64).sqrt() as i64
     }
 
     pub fn normalize(&self) -> Normalized2D {
@@ -22,6 +22,10 @@ impl Vector2D {
             x: self.x as f64 / self.length() as f64,
             y: self.y as f64 / self.length() as f64,
         }
+    }
+
+    pub fn distance(&self, other: &Vector2D) -> f64 {
+        (((self.x - other.x).pow(2) + (self.y - other.y).pow(2)) as f64).sqrt()
     }
 }
 
