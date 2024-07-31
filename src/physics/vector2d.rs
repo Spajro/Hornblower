@@ -1,6 +1,6 @@
 use std::fmt::Display;
 use std::ops;
-use crate::normalized2d::Normalized2D;
+use crate::physics::normalized2d::Normalized2D;
 
 #[derive(Copy, Clone)]
 pub struct Vector2D {

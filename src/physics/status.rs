@@ -1,5 +1,5 @@
 use std::fmt::{Display, Formatter};
-use crate::vector2d::Vector2D;
+use crate::physics::vector2d::Vector2D;
 
 pub struct Status {
     pub position: Vector2D,

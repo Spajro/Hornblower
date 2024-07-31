@@ -1,12 +1,12 @@
 use std::collections::{HashMap, HashSet};
 use std::fmt::{Display, Formatter};
 
-use crate::collider::{CircleCollider2D, Collider};
+use crate::physics::collider::{CircleCollider2D, Collider};
 use crate::graphics::buffer::{Buffer, Paintable};
 use crate::graphics::point::Point;
 use crate::graphics::triangle::Triangle;
 use crate::graphics::vector::Vector;
-use crate::status::Status;
+use crate::physics::status::Status;
 
 pub struct Engine {
     pub status_map: HashMap<u32, Status>,

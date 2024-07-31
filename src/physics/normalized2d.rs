@@ -1,6 +1,6 @@
 use std::fmt::Display;
 use std::ops;
-use crate::vector2d::Vector2D;
+use crate::physics::vector2d::Vector2D;
 
 pub struct Normalized2D {
     pub x: f64,

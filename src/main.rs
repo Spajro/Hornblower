@@ -1,19 +1,16 @@
 use std::thread::sleep;
 use std::time::Duration;
 use minifb::{Key, Window, WindowOptions};
-use crate::collider::CircleCollider2D;
-use crate::engine::Engine;
+use crate::physics::collider::CircleCollider2D;
+use crate::physics::engine::Engine;
 use crate::graphics::buffer::{Buffer, Paintable};
-use crate::status::Status;
-use crate::vector2d::Vector2D;
+use crate::physics::status::Status;
+use crate::physics::vector2d::Vector2D;
 
-mod status;
-mod engine;
-mod vector2d;
-mod normalized2d;
+
 
 mod graphics;
-mod collider;
+mod physics;
 
 
 fn main() {
