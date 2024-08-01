@@ -7,3 +7,4 @@ pub mod vector;
 pub mod square;
 pub mod circle;
 pub mod directed_triangle;
+pub mod circle_with_radius;

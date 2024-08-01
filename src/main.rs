@@ -3,7 +3,9 @@ use crate::physics::collider::CircleCollider2D;
 use crate::physics::engine::Engine;
 use crate::graphics::buffer::{Buffer, Paintable};
 use crate::graphics::circle::Circle;
+use crate::graphics::circle_with_radius::CircleWithRadius;
 use crate::graphics::point::Point;
+use crate::graphics::vector::Vector;
 use crate::physics::status::Status;
 use crate::physics::vector2d::Vector2D;
 
@@ -37,7 +39,7 @@ fn main() {
     engine.register(2, status2);
     engine.register_collider(2, CircleCollider2D::new(20));
 
-    let circle=Circle::new(Point::new(200,200),100);
+    let circle=CircleWithRadius::new(Point::new(200,200),100,Vector::new(45,45).normalize());
 
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
