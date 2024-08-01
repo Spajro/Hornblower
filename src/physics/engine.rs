@@ -5,9 +5,9 @@ use crate::physics::collider::{CircleCollider2D, Collider};
 use crate::graphics::buffer::{Buffer, Paintable};
 use crate::graphics::directed_triangle::DirectedTriangle;
 use crate::graphics::point::Point;
-use crate::graphics::triangle::Triangle;
 use crate::graphics::vector::Vector;
 use crate::physics::status::Status;
+use crate::physics::vector2d::Vector2D;
 
 pub struct Engine {
     pub status_map: HashMap<u32, Status>,
@@ -55,6 +55,11 @@ impl Engine {
             .map(|(a, b)| (**a, **b))
             .collect()
     }
+
+    pub fn accelerate(&mut self, id:u32,acceleration:Vector2D){
+        let mut status=self.status_map.get_mut(&id).unwrap();
+        status.accelerate(acceleration);
+    }
 }
 
 impl Display for Engine {
@@ -78,7 +83,7 @@ impl Paintable for Engine {
                 Vector::new(status.speed.x as i32, status.speed.y as i32).normalize(),
                 20))
             .filter(|r| r.is_ok())
-            .map(|r|r.unwrap())
+            .map(|r| r.unwrap())
             .for_each(|triangle| triangle.paint(buffer));
     }
 }
