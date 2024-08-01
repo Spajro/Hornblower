@@ -14,6 +14,18 @@ impl Normalized {
             y,
         }
     }
+
+    pub fn length(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
+
+    pub fn dot(&self, other: &Normalized) -> f32 {
+        self.x * other.x + self.y * other.y
+    }
+
+    pub fn angle(&self, other: &Normalized) -> f32 {
+        (self.dot(other) / (self.length() * other.length())).asin()
+    }
 }
 
 impl ops::Mul<i32> for Normalized {

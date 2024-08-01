@@ -8,3 +8,4 @@ pub mod square;
 pub mod circle;
 pub mod directed_triangle;
 pub mod circle_with_radius;
+pub mod rectangle;
