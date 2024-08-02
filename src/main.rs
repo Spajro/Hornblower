@@ -4,7 +4,7 @@ use crate::physics::engine::Engine;
 use crate::graphics::buffer::{Buffer, Paintable};
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
-use crate::gui::click::Click;
+use crate::gui::click::{Click, ClickHandler};
 use crate::gui::compass::Compass;
 use crate::gui::throttle::Throttle;
 use crate::physics::normalized2d::Normalized2D;
