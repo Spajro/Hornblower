@@ -24,7 +24,7 @@ impl Compass {
         self.direction = direction;
     }
 
-    pub fn handle_click(&mut self, click: Click) {
+    pub fn handle_click(&mut self, click: &Click) {
         self.direction = (click.as_vector() - self.center.as_vector()).normalize();
     }
 }

@@ -1,5 +1,6 @@
 use std::ops;
-use std::ops::AddAssign;
+use std::ops::{AddAssign, Mul};
+use std::process::Output;
 use crate::graphics::normalized::Normalized;
 
 #[derive(Clone, Copy)]
@@ -54,6 +55,28 @@ impl ops::Sub<Vector> for Vector {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
         }
+    }
+}
+
+impl ops::Div<i32> for Vector {
+    type Output = Vector;
+
+    fn div(self, rhs: i32) -> Self::Output {
+        Vector {
+            x: self.x / rhs,
+            y: self.y /rhs,
+        }
+    }
+}
+
+impl Mul<f32> for Vector {
+    type Output = Vector;
+
+    fn mul(self, rhs: f32) -> Self::Output {
+       Vector{
+           x: (self.x as f32 * rhs) as i32,
+           y: (self.y as f32 * rhs) as i32,
+       }
     }
 }
 
