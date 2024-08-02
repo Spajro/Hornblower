@@ -18,7 +18,14 @@ impl Throttle {
     }
 
     pub fn handle_click(&mut self, click: &Click) {
-        self.percent= -2.0* (click.y as f32- self.center.y as f32) / self.height as f32;
+        if click.x < self.center.x as u32 - (self.width / 2) ||
+            click.x > self.center.x as u32 + (self.width / 2) ||
+            click.y < self.center.y as u32 - (self.height / 2) ||
+            click.y > self.center.y as u32 + (self.height / 2)
+            {
+                return;
+            }
+        self.percent = -2.0 * (click.y as f32 - self.center.y as f32) / self.height as f32;
     }
 }
 

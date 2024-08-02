@@ -7,12 +7,12 @@ use crate::gui::click::Click;
 
 pub struct Compass {
     pub center: Point,
-    pub size: usize,
+    pub size: u32,
     pub direction: Normalized,
 }
 
 impl Compass {
-    pub fn new(center: Point, size: usize) -> Self {
+    pub fn new(center: Point, size: u32) -> Self {
         Compass {
             center,
             size,
@@ -25,13 +25,20 @@ impl Compass {
     }
 
     pub fn handle_click(&mut self, click: &Click) {
+        if click.x < self.center.x as u32 - (self.size / 2) ||
+            click.x > self.center.x as u32 + (self.size / 2) ||
+            click.y < self.center.y as u32 - (self.size / 2) ||
+            click.y > self.center.y as u32 + (self.size / 2)
+        {
+            return;
+        }
         self.direction = (click.as_vector() - self.center.as_vector()).normalize();
     }
 }
 
 impl Paintable for Compass {
     fn paint(&self, buffer: &mut Buffer) {
-        Square::new(self.center, Normalized::new(0.0, -1.0), self.size as u32).paint(buffer);
-        CircleWithRadius::new(self.center, (self.size / 4) as u32, self.direction).paint(buffer);
+        Square::new(self.center, Normalized::new(0.0, -1.0), self.size).paint(buffer);
+        CircleWithRadius::new(self.center, self.size / 4, self.direction).paint(buffer);
     }
 }
