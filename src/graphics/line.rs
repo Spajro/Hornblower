@@ -19,7 +19,7 @@ impl Paintable for Line {
         let lower;
         let greater;
 
-        if distance.x == 0 {
+        if distance.x.abs() <= 1 {
             if self.first.y < self.second.y {
                 greater = self.second;
                 lower = self.first;
