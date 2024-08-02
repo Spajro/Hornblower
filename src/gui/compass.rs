@@ -38,7 +38,7 @@ impl Compass {
 
 impl Paintable for Compass {
     fn paint(&self, buffer: &mut Buffer) {
-        Square::new(self.center, Normalized::new(0.0, -1.0), self.size).paint(buffer);
-        CircleWithRadius::new(self.center, self.size / 4, self.direction).paint(buffer);
+        Square::new(self.center, Normalized::new(0.0, -1.0), 2*self.size).paint(buffer);
+        CircleWithRadius::new(self.center, self.size/2, self.direction).paint(buffer);
     }
 }

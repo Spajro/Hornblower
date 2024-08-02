@@ -2,11 +2,8 @@ use minifb::{Key, MouseButton, MouseMode, Window, WindowOptions};
 use crate::physics::collider::CircleCollider2D;
 use crate::physics::engine::Engine;
 use crate::graphics::buffer::{Buffer, Paintable};
-use crate::graphics::circle_with_radius::CircleWithRadius;
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
-use crate::graphics::rectangle::Rectangle;
-use crate::graphics::vector::Vector;
 use crate::gui::click::Click;
 use crate::gui::compass::Compass;
 use crate::gui::throttle::Throttle;
@@ -27,7 +24,7 @@ fn main() {
     const WIDTH: usize = 640;
     const HEIGHT: usize = 360;
     const FRAME_RATE: u32 = 10;
-    const SCALE: u32 = 4;
+    const SCALE: u32 = 10;
 
     let mut engine = Engine::new(FRAME_RATE, SCALE);
     let mut window = Window::new(
@@ -39,17 +36,10 @@ fn main() {
     window.set_target_fps(FRAME_RATE as usize);
 
     let mut status1 = Status::with_position(Vector2D::new(100, 100));
-    status1.accelerate(Vector2D::new(-10, 0));
     engine.register(1, status1);
     engine.register_collider(1, CircleCollider2D::new(20));
 
-    let mut status2 = Status::with_position(Vector2D::new(200, 200));
-    status2.accelerate(Vector2D::new(0, -10));
-    engine.register(2, status2);
-    engine.register_collider(2, CircleCollider2D::new(20));
-
-    let circle=CircleWithRadius::new(Point::new(200,200),100,Vector::new(45,45).normalize());
-    let mut throttle=Throttle::new(Point::new(250,250),100,50);
+    let mut throttle=Throttle::new(Point::new(75,50),100,50);
     let mut compass=Compass::new(
         Point::new(25,25),
         50,
@@ -59,23 +49,22 @@ fn main() {
         //println!("|\n{}|", engine);
         if window.get_mouse_down(MouseButton::Left){
             let click=window.get_mouse_pos(MouseMode::Pass).unwrap();
-            println!("CLICK {} {}",click.0,click.1);
             let click=Click::new(click.0 as u32, click.1 as u32);
             compass.handle_click(&click);
             throttle.handle_click(&click);
             engine.accelerate(1,normalized_to_normalized2d(compass.direction)* ((40.0 * throttle.percent) as i64));
         }
 
-        let mut buffer = Buffer::new(WIDTH, HEIGHT);
-        circle.paint(&mut buffer);
-        compass.paint(&mut buffer);
-        throttle.paint(&mut buffer);
         engine.update();
         let collisions = engine.check_collisions();
         if !collisions.is_empty() {
             let collision = collisions.first().unwrap();
             println!("COLLISION {} {}", collision.0, collision.1);
         };
+
+        let mut buffer = Buffer::new(WIDTH, HEIGHT);
+        compass.paint(&mut buffer);
+        throttle.paint(&mut buffer);
         engine.paint(&mut buffer);
 
         window
