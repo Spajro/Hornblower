@@ -1,4 +1,3 @@
-use crate::graphics::buffer::{Buffer, Paintable};
 use crate::graphics::vector::Vector;
 
 #[derive(Copy, Clone)]
@@ -30,19 +29,6 @@ impl Point {
                 x: vector.x as usize,
                 y: vector.y as usize,
             })
-        }
-    }
-
-    fn from_u8_rgb(r: u8, g: u8, b: u8) -> u32 {
-        let (r, g, b) = (r as u32, g as u32, b as u32);
-        (r << 16) | (g << 8) | b
-    }
-}
-
-impl Paintable for Point {
-    fn paint(&self, buffer: &mut Buffer) {
-        if self.x < buffer.width && self.y < buffer.height {
-            buffer.buffer[self.x + self.y * buffer.width] = Self::from_u8_rgb(128, 0, 0);
         }
     }
 }

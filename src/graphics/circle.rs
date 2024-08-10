@@ -23,7 +23,7 @@ impl Paintable for Circle{
         let cnt=self.center.as_vector();
         for i in 0..720{
             let angle=PI*4.0*i as f32/720.0;
-            Point::from_vector(cnt+vector.rotate(angle)).unwrap().paint(buffer);
+            buffer.paint_pixel(cnt+vector.rotate(angle))
         }
     }
 }
