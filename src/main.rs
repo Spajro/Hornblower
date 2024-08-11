@@ -41,7 +41,7 @@ fn main() {
     engine.register_collider(1, CircleCollider2D::new(20));
 
     let mut throttle=Throttle::new(Point::new(75,50),100,50);
-    let mut button=TickButton::new(Point::new(125,50),50);
+    let mut button=TickButton::new(Point::new(125,25),25);
     let mut compass=Compass::new(
         Point::new(25,25),
         50,

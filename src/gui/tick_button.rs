@@ -30,13 +30,13 @@ impl TickButton {
 impl Paintable for TickButton {
     fn paint(&self, buffer: &mut Buffer) {
         Square::new(self.center, Normalized::new(0.0, 1.0), 2 * self.size).paint(buffer);
-        let inside = Square::new(self.center, Normalized::new(0.0, -1.0), (1.8 * self.size as f32) as u32);
+        let inside = Square::new(self.center, Normalized::new(0.0, 1.0), (1.8 * self.size as f32) as u32);
         inside.paint(buffer);
 
         if self.click {
-            let center = Line::new(inside.second, inside.third).center();
-            Line::new(inside.first, center).paint(buffer);
-            Line::new(inside.fourth, center).paint(buffer);
+            let center = Line::new(inside.get_second(), inside.get_third()).center();
+            Line::new(inside.get_first(), center).paint(buffer);
+            Line::new(inside.get_fourth(), center).paint(buffer);
         }
     }
 }
