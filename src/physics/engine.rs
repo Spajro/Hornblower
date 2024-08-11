@@ -3,7 +3,7 @@ use std::fmt::{Display, Formatter};
 
 use crate::physics::collider::{CircleCollider2D, Collider};
 use crate::graphics::buffer::{Buffer, Paintable};
-use crate::graphics::directed_triangle::DirectedTriangle;
+use crate::graphics::shapes::directed_triangle::DirectedTriangle;
 use crate::graphics::point::Point;
 use crate::graphics::vector::Vector;
 use crate::physics::status::Status;

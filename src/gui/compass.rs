@@ -1,8 +1,8 @@
 use crate::graphics::buffer::{Buffer, Paintable};
-use crate::graphics::circle_with_radius::CircleWithRadius;
+use crate::graphics::shapes::circle_with_radius::CircleWithRadius;
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
-use crate::graphics::square::Square;
+use crate::graphics::shapes::square::Square;
 use crate::gui::click::{Click, ClickHandler};
 
 pub struct Compass {

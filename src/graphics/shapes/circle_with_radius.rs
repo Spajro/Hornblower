@@ -1,5 +1,5 @@
 use crate::graphics::buffer::{Buffer, Paintable};
-use crate::graphics::circle::Circle;
+use crate::graphics::shapes::circle::Circle;
 use crate::graphics::line::Line;
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;

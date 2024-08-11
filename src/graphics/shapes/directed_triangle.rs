@@ -2,7 +2,7 @@ use crate::graphics::buffer::{Buffer, Paintable};
 use crate::graphics::line::Line;
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
-use crate::graphics::triangle::Triangle;
+use crate::graphics::shapes::triangle::Triangle;
 
 pub struct DirectedTriangle {
     pub triangle: Triangle,
