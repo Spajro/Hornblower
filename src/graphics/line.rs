@@ -5,12 +5,21 @@ use crate::graphics::vector::Vector;
 pub struct Line {
     pub first: Point,
     pub second: Point,
-}impl Line {
+}
+
+impl Line {
     pub fn new(first: Point, second: Point) -> Self {
         Line {
             first,
             second,
         }
+    }
+
+    pub fn center(&self) -> Point {
+        Point::new(
+            (self.first.x + self.second.x) / 2,
+            (self.first.y + self.second.y) / 2,
+        )
     }
 }
 

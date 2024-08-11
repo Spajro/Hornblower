@@ -4,10 +4,10 @@ use crate::physics::engine::Engine;
 use crate::graphics::buffer::{Buffer, Paintable};
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
-use crate::gui::button::Button;
 use crate::gui::click::{Click, ClickHandler};
 use crate::gui::compass::Compass;
 use crate::gui::throttle::Throttle;
+use crate::gui::tick_button::TickButton;
 use crate::physics::normalized2d::Normalized2D;
 use crate::physics::status::Status;
 use crate::physics::vector2d::Vector2D;
@@ -41,7 +41,7 @@ fn main() {
     engine.register_collider(1, CircleCollider2D::new(20));
 
     let mut throttle=Throttle::new(Point::new(75,50),100,50);
-    let mut button=Button::new(Point::new(125,50),50);
+    let mut button=TickButton::new(Point::new(125,50),50);
     let mut compass=Compass::new(
         Point::new(25,25),
         50,
@@ -70,9 +70,8 @@ fn main() {
         throttle.paint(&mut buffer);
         engine.paint(&mut buffer);
         button.paint(&mut buffer);
-        if(button.clicked()){
+        if button.clicked() {
             println!("CLICK");
-            button.reset();
         }
 
         window
