@@ -4,3 +4,4 @@ pub mod normalized;
 pub mod point;
 pub mod vector;
 pub mod shapes;
+pub mod figure;
