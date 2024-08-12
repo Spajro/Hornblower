@@ -25,8 +25,6 @@ impl Square {
     }
 
     fn rotate_by_direction(&self, point: Point) -> Point {
-        let p = point.as_vector().rotate(self.direction.angle(&Normalized::new(1.0, 0.0)));
-        println!("{},{}", p.x, p.y);
         Point::from_vector(point.as_vector().rotate(self.direction.angle(&Normalized::new(1.0, 0.0)))).unwrap()
     }
 

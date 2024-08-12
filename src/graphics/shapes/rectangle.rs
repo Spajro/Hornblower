@@ -15,9 +15,9 @@ impl Rectangle {
     pub fn new(center: Point, direction: Normalized, width: u32,height:u32) -> Self {
         let tv = center.as_vector();
         let angle=direction.angle(&Normalized::new(1.0,0.0));
-        let v1 = tv + Vector::new((height as i32/ 2), -(width as i32 / 2)).rotate(angle);
-        let v2 = tv + Vector::new((height as i32/ 2), (width as i32/ 2)).rotate(angle);
-        let v3 = tv + Vector::new(-(height as i32/ 2), (width as i32/ 2)).rotate(angle);
+        let v1 = tv + Vector::new(height as i32/ 2, -(width as i32 / 2)).rotate(angle);
+        let v2 = tv + Vector::new(height as i32/ 2, width as i32/ 2).rotate(angle);
+        let v3 = tv + Vector::new(-(height as i32/ 2), width as i32/ 2).rotate(angle);
         let v4 = tv + Vector::new(-(height as i32/ 2), -(width as i32/ 2)).rotate(angle);
         let first = Point::from_vector(v1).unwrap();
         let second = Point::from_vector(v2).unwrap();

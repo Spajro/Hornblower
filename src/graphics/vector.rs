@@ -1,6 +1,5 @@
 use std::ops;
 use std::ops::{AddAssign, Mul};
-use std::process::Output;
 use crate::graphics::normalized::Normalized;
 
 #[derive(Clone, Copy)]

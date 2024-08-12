@@ -36,7 +36,7 @@ fn main() {
     ).unwrap_or_else(|e| { panic!("{}", e); });
     window.set_target_fps(FRAME_RATE as usize);
 
-    let mut status1 = Status::with_position(Vector2D::new(100, 100));
+    let status1 = Status::with_position(Vector2D::new(100, 100));
     engine.register(1, status1);
     engine.register_collider(1, CircleCollider2D::new(20));
 
