@@ -1,3 +1,4 @@
+use std::time::{Duration, Instant};
 use minifb::{Key, MouseButton, MouseMode, Window, WindowOptions};
 use crate::physics::collider::CircleCollider2D;
 use crate::physics::engine::Engine;
@@ -51,6 +52,7 @@ fn main() {
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         //println!("|\n{}|", engine);
+        let now=Instant::now();
         if window.get_mouse_down(MouseButton::Left){
             let click=window.get_mouse_pos(MouseMode::Pass).unwrap();
             let click=Click::new(click.0 as u32, click.1 as u32);
@@ -77,7 +79,8 @@ fn main() {
         if button.clicked() {
             println!("CLICK");
         }
-
+        let elapsed_time = now.elapsed();
+        println!("Time per frame:{} , fps:{}",elapsed_time.as_nanos(),Duration::from_secs(1).as_nanos()/elapsed_time.as_nanos());
         window
             .update_with_buffer(&buffer.buffer, buffer.width, buffer.height)
             .unwrap();
