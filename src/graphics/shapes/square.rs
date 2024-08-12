@@ -14,7 +14,6 @@ pub struct Square {
 impl Square {
     pub fn new(center: Point, direction: Normalized, length: u32) -> Self {
         let half_length = (length / 2) as usize;
-        println!("x:{} y:{} hl:{}", center.x, center.y, half_length);
         Square {
             x1: center.x - half_length,
             x2: center.x + half_length,

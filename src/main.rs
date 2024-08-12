@@ -6,6 +6,7 @@ use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
 use crate::gui::click::{Click, ClickHandler};
 use crate::gui::compass::Compass;
+use crate::gui::plus_minus::PlusMinus;
 use crate::gui::throttle::Throttle;
 use crate::gui::tick_button::TickButton;
 use crate::physics::normalized2d::Normalized2D;
@@ -46,6 +47,7 @@ fn main() {
         Point::new(25,25),
         50,
     );
+    let mut plusminus=PlusMinus::new(Point::new(200,25),50,Normalized::new(0.0,1.0),0);
 
     while window.is_open() && !window.is_key_down(Key::Escape) {
         //println!("|\n{}|", engine);
@@ -55,6 +57,7 @@ fn main() {
             compass.handle_click(&click);
             throttle.handle_click(&click);
             button.handle_click(&click);
+            plusminus.handle_click(&click);
             engine.accelerate(1,normalized_to_normalized2d(compass.direction)* ((40.0 * throttle.percent) as i64));
         }
 
@@ -70,6 +73,7 @@ fn main() {
         throttle.paint(&mut buffer);
         engine.paint(&mut buffer);
         button.paint(&mut buffer);
+        plusminus.paint(&mut buffer);
         if button.clicked() {
             println!("CLICK");
         }
