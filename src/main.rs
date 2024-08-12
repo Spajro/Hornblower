@@ -1,27 +1,20 @@
 use std::time::{Duration, Instant};
+
 use minifb::{Key, MouseButton, MouseMode, Window, WindowOptions};
+
+use crate::game::interface::Interface;
+use crate::graphics::buffer::{Buffer, Paintable};
+use crate::gui::click::{Click, ClickHandler};
 use crate::physics::collider::CircleCollider2D;
 use crate::physics::engine::Engine;
-use crate::graphics::buffer::{Buffer, Paintable};
-use crate::graphics::normalized::Normalized;
-use crate::graphics::point::Point;
-use crate::gui::click::{Click, ClickHandler};
-use crate::gui::compass::Compass;
-use crate::gui::plus_minus::PlusMinus;
-use crate::gui::throttle::Throttle;
-use crate::gui::tick_button::TickButton;
-use crate::physics::normalized2d::Normalized2D;
 use crate::physics::status::Status;
 use crate::physics::vector2d::Vector2D;
-
 
 mod graphics;
 mod physics;
 mod gui;
+mod game;
 
-fn normalized_to_normalized2d(normalized:Normalized)->Normalized2D{
-    Normalized2D::new(normalized.x as f64, normalized.y as f64)
-}
 
 fn main() {
     const WIDTH: usize = 640;
@@ -42,25 +35,14 @@ fn main() {
     engine.register(1, status1);
     engine.register_collider(1, CircleCollider2D::new(20));
 
-    let mut throttle=Throttle::new(Point::new(75,50),100,50);
-    let mut button=TickButton::new(Point::new(125,25),25);
-    let mut compass=Compass::new(
-        Point::new(25,25),
-        50,
-    );
-    let mut plusminus=PlusMinus::new(Point::new(200,25),50,Normalized::new(0.0,1.0),0);
-
+    let mut interface = Interface::new(HEIGHT as u32, WIDTH as u32, SCALE);
     while window.is_open() && !window.is_key_down(Key::Escape) {
         //println!("|\n{}|", engine);
-        let now=Instant::now();
-        if window.get_mouse_down(MouseButton::Left){
-            let click=window.get_mouse_pos(MouseMode::Pass).unwrap();
-            let click=Click::new(click.0 as u32, click.1 as u32);
-            compass.handle_click(&click);
-            throttle.handle_click(&click);
-            button.handle_click(&click);
-            plusminus.handle_click(&click);
-            engine.accelerate(1,normalized_to_normalized2d(compass.direction)* ((40.0 * throttle.percent) as i64));
+        let now = Instant::now();
+        if window.get_mouse_down(MouseButton::Left) {
+            let click = window.get_mouse_pos(MouseMode::Pass).unwrap();
+            let click = &Click::new(click.0 as u32, click.1 as u32);
+            interface.handle_click(click, &mut engine,1);
         }
 
         engine.update();
@@ -71,16 +53,12 @@ fn main() {
         };
 
         let mut buffer = Buffer::new(WIDTH, HEIGHT);
-        compass.paint(&mut buffer);
-        throttle.paint(&mut buffer);
         engine.paint(&mut buffer);
-        button.paint(&mut buffer);
-        plusminus.paint(&mut buffer);
-        if button.clicked() {
-            println!("CLICK");
-        }
+        interface.paint(&mut buffer);
+
         let elapsed_time = now.elapsed();
-        println!("Time per frame:{} , fps:{}",elapsed_time.as_nanos(),Duration::from_secs(1).as_nanos()/elapsed_time.as_nanos());
+        println!("Time per frame:{} , fps:{}", elapsed_time.as_nanos(), Duration::from_secs(1).as_nanos() / elapsed_time.as_nanos());
+
         window
             .update_with_buffer(&buffer.buffer, buffer.width, buffer.height)
             .unwrap();
