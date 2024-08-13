@@ -4,16 +4,16 @@ use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
 
 pub struct Square {
-    x1: usize,
-    x2: usize,
-    y1: usize,
-    y2: usize,
+    x1: u32,
+    x2: u32,
+    y1: u32,
+    y2: u32,
     direction: Normalized,
 }
 
 impl Square {
     pub fn new(center: Point, direction: Normalized, length: u32) -> Self {
-        let half_length = (length / 2) as usize;
+        let half_length = length / 2;
         Square {
             x1: center.x - half_length,
             x2: center.x + half_length,

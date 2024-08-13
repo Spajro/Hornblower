@@ -82,8 +82,8 @@ impl Paintable for Engine {
         self.status_map.iter()
             .map(|(id, status)| DirectedTriangle::equilateral(
                 Point::new(
-                    ((status.position.x as f32 / self.scale as f32) + ((width / 2) as f32)) as usize,
-                    ((status.position.y as f32 / self.scale as f32) + ((height / 2) as f32)) as usize),
+                    ((status.position.x as f32 / self.scale as f32) + ((width / 2) as f32)) as u32,
+                    ((status.position.y as f32 / self.scale as f32) + ((height / 2) as f32)) as u32),
                 Vector::new(status.speed.x as i32, status.speed.y as i32).normalize(),
                 20))
             .filter(|r| r.is_ok())

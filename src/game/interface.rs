@@ -16,17 +16,17 @@ pub struct Interface {
 
 impl Interface {
     pub fn new(height: u32, width: u32, scale: u32) -> Self {
-        let size = 50u32 as usize;
-        let half_size=size/2;
+        let size = 50;
+        let half_size = size / 2;
         let direction = Normalized::new(1.0, 0.0);
         Interface {
-            throttle: Throttle::new(Point::new(half_size, height as usize - size), 2*size as u32, size as u32),
-            compass: Compass::new(Point::new(2*size, height as usize - size), 2*size as u32),
-            zoom: PlusMinus::new(Point::new(size, half_size), size as u32, direction, scale as i32),
+            throttle: Throttle::new(Point::new(half_size, height - size), 2 * size, size),
+            compass: Compass::new(Point::new(2 * size, height - size), 2 * size),
+            zoom: PlusMinus::new(Point::new(size, half_size), size, direction, scale as i32),
         }
     }
 
-    fn normalized_to_normalized2d(normalized:Normalized)->Normalized2D{
+    fn normalized_to_normalized2d(normalized: Normalized) -> Normalized2D {
         Normalized2D::new(normalized.x as f64, normalized.y as f64)
     }
 

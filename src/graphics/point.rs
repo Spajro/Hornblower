@@ -2,12 +2,12 @@ use crate::graphics::vector::Vector;
 
 #[derive(Copy, Clone)]
 pub struct Point {
-    pub x: usize,
-    pub y: usize,
+    pub x: u32,
+    pub y: u32,
 }
 
 impl Point {
-    pub fn new(x: usize, y: usize) -> Self {
+    pub fn new(x: u32, y: u32) -> Self {
         Point {
             x,
             y,
@@ -26,8 +26,8 @@ impl Point {
             Err("Point cant have negative coordinates ")
         } else {
             Ok(Point {
-                x: vector.x as usize,
-                y: vector.y as usize,
+                x: vector.x as u32,
+                y: vector.y as u32,
             })
         }
     }

@@ -12,12 +12,12 @@ pub struct PlusMinus {
 
 impl PlusMinus {
     pub fn new(center: Point, size: u32, direction: Normalized, initial_value: i32) -> Self {
-        let half_size = (size / 2) as usize;
+        let half_size = size / 2;
         let left_center = Point::new(center.x - half_size, center.y);
         let right_center = Point::new(center.x + half_size, center.y);
         PlusMinus {
-            plus: Button::with_plus(left_center, half_size as u32),
-            minus: Button::with_minus(right_center, half_size as u32),
+            plus: Button::with_plus(left_center, half_size),
+            minus: Button::with_minus(right_center, half_size),
             value: initial_value,
         }
     }

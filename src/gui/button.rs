@@ -18,10 +18,10 @@ impl Button {
     pub fn new(center: Point, size: u32) -> Self {
         Button {
             area: Area::new(
-                center.x as u32 - (size / 2),
-                center.y as u32 - (size / 2),
-                center.x as u32 + (size / 2),
-                center.y as u32 + (size / 2),
+                center.x - (size / 2),
+                center.y - (size / 2),
+                center.x + (size / 2),
+                center.y + (size / 2),
             ),
             figure: Figure::new()
                 .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), 2 * size)))
@@ -31,13 +31,13 @@ impl Button {
     }
 
     pub fn with_plus(center: Point, size: u32) -> Self {
-        let half_size = (size / 2) as usize;
+        let half_size = size / 2;
         Button {
             area: Area::new(
-                center.x as u32 - (size / 2),
-                center.y as u32 - (size / 2),
-                center.x as u32 + (size / 2),
-                center.y as u32 + (size / 2),
+                center.x - (size / 2),
+                center.y - (size / 2),
+                center.x + (size / 2),
+                center.y + (size / 2),
             ),
             figure: Figure::new()
                 .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), 2 * size)))
@@ -49,13 +49,13 @@ impl Button {
     }
 
     pub fn with_minus(center: Point, size: u32) -> Self {
-        let half_size = (size / 2) as usize;
+        let half_size = size / 2;
         Button {
             area: Area::new(
-                center.x as u32 - (size / 2),
-                center.y as u32 - (size / 2),
-                center.x as u32 + (size / 2),
-                center.y as u32 + (size / 2),
+                center.x - (size / 2),
+                center.y - (size / 2),
+                center.x + (size / 2),
+                center.y + (size / 2),
             ),
             figure: Figure::new()
                 .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), 2 * size)))
