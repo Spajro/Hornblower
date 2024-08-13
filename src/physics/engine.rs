@@ -56,9 +56,13 @@ impl Engine {
             .collect()
     }
 
-    pub fn accelerate(&mut self, id:u32,acceleration:Vector2D){
-        let mut status=self.status_map.get_mut(&id).unwrap();
+    pub fn accelerate(&mut self, id: u32, acceleration: Vector2D) {
+        let mut status = self.status_map.get_mut(&id).unwrap();
         status.accelerate(acceleration);
+    }
+
+    pub fn set_scale(&mut self, scale: u32) {
+        self.scale = scale
     }
 }
 

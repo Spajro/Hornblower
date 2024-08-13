@@ -21,6 +21,10 @@ impl PlusMinus {
             value: initial_value,
         }
     }
+
+    pub fn get_value(&self)->i32{
+        self.value
+    }
 }
 
 impl Paintable for PlusMinus {

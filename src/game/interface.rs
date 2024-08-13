@@ -35,6 +35,7 @@ impl Interface {
         self.compass.handle_click(click);
         self.throttle.handle_click(click);
         engine.accelerate(id, Self::normalized_to_normalized2d(self.compass.direction) * ((40.0 * self.throttle.percent) as i64));
+        engine.set_scale(self.zoom.get_value() as u32)
     }
 }
 
