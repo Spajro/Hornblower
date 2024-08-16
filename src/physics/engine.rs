@@ -6,12 +6,14 @@ use crate::graphics::buffer::{Buffer, Paintable};
 use crate::graphics::shapes::directed_triangle::DirectedTriangle;
 use crate::graphics::point::Point;
 use crate::graphics::vector::Vector;
+use crate::physics::limitations::Limitations;
 use crate::physics::status::Status;
 use crate::physics::vector2d::Vector2D;
 
 pub struct Engine {
     pub status_map: HashMap<u32, Status>,
     pub collider_map: HashMap<u32, CircleCollider2D>,
+    pub limitations_map: HashMap<u32, Limitations>,
     tick_rate: u32,
     scale: u32,
 }
@@ -21,15 +23,25 @@ impl Engine {
         Engine {
             status_map: HashMap::new(),
             collider_map: HashMap::new(),
+            limitations_map: HashMap::new(),
             tick_rate,
             scale,
         }
     }
     pub fn update(&mut self) {
-        self.status_map.iter_mut().for_each(|(id, status)| status.update(self.tick_rate));
+        self.status_map.iter_mut()
+            .for_each(|(id, status)| {
+                status.update(self.tick_rate);
+                let limit = self.limitations_map.get(id).unwrap();
+                if !limit.validate(status) {
+                    limit.adjust_to_valid(status)
+                }
+            }
+            );
     }
-    pub fn register(&mut self, id: u32, object: Status) {
+    pub fn register(&mut self, id: u32, object: Status, limitations: Limitations) {
         self.status_map.insert(id, object);
+        self.limitations_map.insert(id, limitations);
     }
 
     pub fn register_collider(&mut self, id: u32, collider: CircleCollider2D) {

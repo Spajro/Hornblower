@@ -13,8 +13,8 @@ impl Vector2D {
         Vector2D { x, y }
     }
 
-    pub fn length(&self) -> i64 {
-        ((self.x * self.x + self.y * self.y) as f64).sqrt() as i64
+    pub fn length(&self) -> u64 {
+        ((self.x * self.x + self.y * self.y) as f64).sqrt() as u64
     }
 
     pub fn normalize(&self) -> Normalized2D {

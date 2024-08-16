@@ -7,6 +7,7 @@ use crate::graphics::buffer::{Buffer, Paintable};
 use crate::gui::click::{Click, ClickHandler};
 use crate::physics::collider::CircleCollider2D;
 use crate::physics::engine::Engine;
+use crate::physics::limitations::Limitations;
 use crate::physics::status::Status;
 use crate::physics::vector2d::Vector2D;
 
@@ -32,7 +33,8 @@ fn main() {
     window.set_target_fps(FRAME_RATE as usize);
 
     let status1 = Status::with_position(Vector2D::new(100, 100));
-    engine.register(1, status1);
+    let limit=Limitations::new(100,100);
+    engine.register(1, status1,limit);
     engine.register_collider(1, CircleCollider2D::new(20));
 
     let mut interface = Interface::new(HEIGHT as u32, WIDTH as u32, SCALE);
