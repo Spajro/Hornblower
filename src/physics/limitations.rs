@@ -29,4 +29,12 @@ impl Limitations {
         vector.x = limit as i64 * vector.x / len as i64;
         vector.y = limit as i64 * vector.y / len as i64;
     }
+
+    pub fn acceleration(&self)->u64{
+        self.acceleration
+    }
+
+    pub fn speed(&self)->u64{
+        self.speed
+    }
 }

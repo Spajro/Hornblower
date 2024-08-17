@@ -44,7 +44,7 @@ fn main() {
         if window.get_mouse_down(MouseButton::Left) {
             let click = window.get_mouse_pos(MouseMode::Pass).unwrap();
             let click = &Click::new(click.0 as u32, click.1 as u32);
-            interface.handle_click(click, &mut engine, id);
+            engine.handle_events(interface.handle_click(click, id));
         }
 
         engine.update();

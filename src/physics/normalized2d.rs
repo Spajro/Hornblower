@@ -27,7 +27,7 @@ impl Normalized2D {
     }
 }
 
-impl ops::Mul<i64> for Normalized2D {
+impl ops::Mul<i64> for &Normalized2D {
     type Output = Vector2D;
 
     fn mul(self, rhs: i64) -> Self::Output {

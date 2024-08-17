@@ -8,6 +8,7 @@ use crate::graphics::point::Point;
 use crate::graphics::vector::Vector;
 use crate::physics::id::IdFactory;
 use crate::physics::limitations::Limitations;
+use crate::physics::normalized2d::Normalized2D;
 use crate::physics::status::Status;
 use crate::physics::vector2d::Vector2D;
 
@@ -18,6 +19,12 @@ pub struct Engine {
     limitations_map: HashMap<u32, Limitations>,
     tick_rate: u32,
     scale: u32,
+}
+
+pub enum Event {
+    Accelerate(u32, Normalized2D, f32),
+    Scale(u32),
+    Fire(u32, Normalized2D),
 }
 
 impl Engine {
@@ -79,6 +86,20 @@ impl Engine {
 
     pub fn set_scale(&mut self, scale: u32) {
         self.scale = scale
+    }
+
+    pub fn handle_events(&mut self, events: Vec<Event>) {
+        events.iter().for_each(|e|
+            match e {
+                Event::Accelerate(id, direction, percent) => {
+                    let status = self.status_map.get_mut(id).unwrap();
+                    let limit = self.limitations_map.get(id).unwrap();
+                    status.accelerate(direction * (limit.acceleration() as f32 * percent) as i64)
+                }
+                Event::Scale(scale) => { self.scale = *scale }
+                Event::Fire(id, direction) => {}
+            }
+        )
     }
 }
 
