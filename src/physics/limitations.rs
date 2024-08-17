@@ -12,15 +12,15 @@ impl Limitations {
     }
 
     pub fn validate(&self, status: &Status) -> bool {
-        self.acceleration >= status.acceleration.length() && self.speed >= status.speed.length()
+        self.acceleration >= status.acceleration().length() && self.speed >= status.speed().length()
     }
 
     pub fn adjust_to_valid(&self, status: &mut Status) {
-        if self.acceleration < status.acceleration.length() {
-            Self::adjust(self.acceleration, &mut status.acceleration)
+        if self.acceleration < status.acceleration().length() {
+            Self::adjust(self.acceleration, &mut status.acceleration())
         }
-        if self.speed < status.speed.length() {
-            Self::adjust(self.speed, &mut status.speed)
+        if self.speed < status.speed().length() {
+            Self::adjust(self.speed, &mut status.speed())
         }
     }
 
