@@ -6,14 +6,16 @@ use crate::graphics::buffer::{Buffer, Paintable};
 use crate::graphics::shapes::directed_triangle::DirectedTriangle;
 use crate::graphics::point::Point;
 use crate::graphics::vector::Vector;
+use crate::physics::id::IdFactory;
 use crate::physics::limitations::Limitations;
 use crate::physics::status::Status;
 use crate::physics::vector2d::Vector2D;
 
 pub struct Engine {
-    pub status_map: HashMap<u32, Status>,
-    pub collider_map: HashMap<u32, CircleCollider2D>,
-    pub limitations_map: HashMap<u32, Limitations>,
+    id_factory: IdFactory,
+    status_map: HashMap<u32, Status>,
+    collider_map: HashMap<u32, CircleCollider2D>,
+    limitations_map: HashMap<u32, Limitations>,
     tick_rate: u32,
     scale: u32,
 }
@@ -21,6 +23,7 @@ pub struct Engine {
 impl Engine {
     pub fn new(tick_rate: u32, scale: u32) -> Self {
         Engine {
+            id_factory: IdFactory::new(),
             status_map: HashMap::new(),
             collider_map: HashMap::new(),
             limitations_map: HashMap::new(),
@@ -36,12 +39,13 @@ impl Engine {
                 if !limit.validate(status) {
                     limit.adjust_to_valid(status)
                 }
-            }
-            );
+            });
     }
-    pub fn register(&mut self, id: u32, object: Status, limitations: Limitations) {
+    pub fn register(&mut self, object: Status, limitations: Limitations) -> u32 {
+        let id = self.id_factory.next();
         self.status_map.insert(id, object);
         self.limitations_map.insert(id, limitations);
+        return id;
     }
 
     pub fn register_collider(&mut self, id: u32, collider: CircleCollider2D) {
