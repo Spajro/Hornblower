@@ -97,7 +97,13 @@ impl Engine {
                     status.accelerate(direction * (limit.acceleration() as f32 * percent) as i64)
                 }
                 Event::Scale(scale) => { self.scale = *scale }
-                Event::Fire(id, direction) => {}
+                Event::Fire(id, direction) => {
+                    let status = self.status_map.get_mut(id).unwrap();
+                    let position = status.position() + direction * 10;
+                    let speed=direction*100;
+                    let missile=Status::with_position_and_speed(position,speed);
+                    self.register(missile,Limitations::new(0,100));
+                }
             }
         )
     }
