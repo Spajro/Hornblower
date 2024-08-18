@@ -25,7 +25,7 @@ impl Buffer {
     }
 
     pub fn paint_pixel(&mut self, position: Vector) {
-        if position.x < self.width as i32 && position.y < self.height as i32 {
+        if position.x < self.width as i32 && position.y < self.height as i32 && 0 <= position.x && 0 <= position.y {
             self.buffer[(position.x as usize) + (position.y as usize) * self.width] = Self::from_u8_rgb(128, 0, 0);
         }
     }
