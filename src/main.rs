@@ -6,7 +6,7 @@ use crate::game::interface::Interface;
 use crate::graphics::buffer::{Buffer, Paintable};
 use crate::gui::click::{Click, ClickHandler};
 use crate::physics::collider::CircleCollider2D;
-use crate::physics::engine::Engine;
+use crate::physics::engine::{Engine, ObjectType};
 use crate::physics::limitations::Limitations;
 use crate::physics::status::Status;
 use crate::physics::vector2d::Vector2D;
@@ -34,7 +34,7 @@ fn main() {
 
     let status = Status::with_position(Vector2D::new(100, 100));
     let limit = Limitations::new(100, 100);
-    let id = engine.register(status, limit);
+    let id = engine.register(status, limit,ObjectType::SHIP);
     engine.register_collider(id, CircleCollider2D::new(20));
 
     let mut interface = Interface::new(HEIGHT as u32, WIDTH as u32, SCALE);

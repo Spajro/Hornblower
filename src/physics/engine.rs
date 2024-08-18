@@ -5,6 +5,7 @@ use crate::physics::collider::{CircleCollider2D, Collider};
 use crate::graphics::buffer::{Buffer, Paintable};
 use crate::graphics::shapes::directed_triangle::DirectedTriangle;
 use crate::graphics::point::Point;
+use crate::graphics::shapes::circle_with_radius::CircleWithRadius;
 use crate::graphics::vector::Vector;
 use crate::physics::id::IdFactory;
 use crate::physics::limitations::Limitations;
@@ -17,6 +18,7 @@ pub struct Engine {
     status_map: HashMap<u32, Status>,
     collider_map: HashMap<u32, CircleCollider2D>,
     limitations_map: HashMap<u32, Limitations>,
+    object_type_map: HashMap<u32, ObjectType>,
     tick_rate: u32,
     scale: u32,
 }
@@ -27,6 +29,11 @@ pub enum Event {
     Fire(u32, Normalized2D),
 }
 
+pub enum ObjectType {
+    SHIP,
+    MISSILE,
+}
+
 impl Engine {
     pub fn new(tick_rate: u32, scale: u32) -> Self {
         Engine {
@@ -34,6 +41,7 @@ impl Engine {
             status_map: HashMap::new(),
             collider_map: HashMap::new(),
             limitations_map: HashMap::new(),
+            object_type_map: HashMap::new(),
             tick_rate,
             scale,
         }
@@ -48,10 +56,11 @@ impl Engine {
                 }
             });
     }
-    pub fn register(&mut self, object: Status, limitations: Limitations) -> u32 {
+    pub fn register(&mut self, object: Status, limitations: Limitations, object_type: ObjectType) -> u32 {
         let id = self.id_factory.next();
         self.status_map.insert(id, object);
         self.limitations_map.insert(id, limitations);
+        self.object_type_map.insert(id, object_type);
         return id;
     }
 
@@ -100,9 +109,9 @@ impl Engine {
                 Event::Fire(id, direction) => {
                     let status = self.status_map.get_mut(id).unwrap();
                     let position = status.position() + direction * 10;
-                    let speed=direction*100;
-                    let missile=Status::with_position_and_speed(position,speed);
-                    self.register(missile,Limitations::new(0,100));
+                    let speed = direction * 1000;
+                    let missile = Status::with_position_and_speed(position, speed);
+                    self.register(missile, Limitations::new(0, 1000), ObjectType::MISSILE);
                 }
             }
         )
@@ -123,14 +132,24 @@ impl Paintable for Engine {
         let width = buffer.width;
         let height = buffer.height;
         self.status_map.iter()
-            .map(|(id, status)| DirectedTriangle::equilateral(
-                Point::new(
-                    ((status.position().x as f32 / self.scale as f32) + ((width / 2) as f32)) as u32,
-                    ((status.position().y as f32 / self.scale as f32) + ((height / 2) as f32)) as u32),
-                Vector::new(status.speed().x as i32, status.speed().y as i32).normalize(),
-                20))
-            .filter(|r| r.is_ok())
-            .map(|r| r.unwrap())
-            .for_each(|triangle| triangle.paint(buffer));
+            .for_each(|(id, status)|
+                {
+                    let center = Point::new(
+                        ((status.position().x as f32 / self.scale as f32) + ((width / 2) as f32)) as u32,
+                        ((status.position().y as f32 / self.scale as f32) + ((height / 2) as f32)) as u32);
+                    let direction = Vector::new(status.speed().x as i32, status.speed().y as i32).normalize();
+                    match self.object_type_map.get(id).unwrap() {
+                        ObjectType::SHIP => {
+                            match DirectedTriangle::equilateral(center, direction, 20) {
+                                Ok(t) => t.paint(buffer),
+                                Err(_) => {}
+                            }
+                        }
+                        ObjectType::MISSILE => {
+                            CircleWithRadius::new(center, 5, direction).paint(buffer);
+                        }
+                    }
+                }
+            );
     }
 }
