@@ -7,6 +7,7 @@ use crate::gui::compass::Compass;
 use crate::gui::plus_minus::PlusMinus;
 use crate::gui::throttle::Throttle;
 use crate::physics::engine::Event;
+use crate::physics::id::ID;
 use crate::physics::normalized2d::Normalized2D;
 
 pub struct Interface {
@@ -36,7 +37,7 @@ impl Interface {
         Normalized2D::new(normalized.x as f64, normalized.y as f64)
     }
 
-    pub fn handle_click(&mut self, click: &Click, id: u32) -> Vec<Event> {
+    pub fn handle_click(&mut self, click: &Click, id: ID) -> Vec<Event> {
         self.zoom.handle_click(click);
         self.compass.handle_click(click);
         self.throttle.handle_click(click);

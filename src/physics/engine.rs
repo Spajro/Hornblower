@@ -9,29 +9,29 @@ use crate::graphics::shapes::circle_with_radius::CircleWithRadius;
 use crate::graphics::vector::Vector;
 use crate::physics::cannon::Cannon;
 use crate::physics::float_vector2d::FloatVector2D;
-use crate::physics::id::IdFactory;
+use crate::physics::id::{ID, IdFactory};
 use crate::physics::limitations::Limitations;
 use crate::physics::normalized2d::Normalized2D;
 use crate::physics::status::Status;
 
 pub struct Engine {
     id_factory: IdFactory,
-    status_map: HashMap<u32, Status>,
-    carry_map: HashMap<u32, FloatVector2D>,
-    collider_map: HashMap<u32, CircleCollider2D>,
-    limitations_map: HashMap<u32, Limitations>,
-    object_type_map: HashMap<u32, ObjectType>,
-    cannon_map: HashMap<u32, Cannon>,
-    last_fired_map: HashMap<u32, u32>,
+    status_map: HashMap<ID, Status>,
+    carry_map: HashMap<ID, FloatVector2D>,
+    collider_map: HashMap<ID, CircleCollider2D>,
+    limitations_map: HashMap<ID, Limitations>,
+    object_type_map: HashMap<ID, ObjectType>,
+    cannon_map: HashMap<ID, Cannon>,
+    last_fired_map: HashMap<ID, u32>,
     tick_rate: u32,
     last_tick: u32,
     scale: u32,
 }
 
 pub enum Event {
-    Accelerate(u32, Normalized2D, f32),
+    Accelerate(ID, Normalized2D, f32),
     Scale(u32),
-    Fire(u32, Normalized2D),
+    Fire(ID, Normalized2D),
 }
 
 pub enum ObjectType {
@@ -68,7 +68,7 @@ impl Engine {
             });
         self.last_tick += 1;
     }
-    pub fn register(&mut self, object: Status, limitations: Limitations, object_type: ObjectType) -> u32 {
+    pub fn register(&mut self, object: Status, limitations: Limitations, object_type: ObjectType) -> ID {
         let id = self.id_factory.next();
         self.status_map.insert(id, object);
         self.carry_map.insert(id, FloatVector2D::new(0.0, 0.0));
@@ -77,18 +77,18 @@ impl Engine {
         return id;
     }
 
-    pub fn register_with_collider(&mut self, object: Status, limitations: Limitations, object_type: ObjectType, collider: CircleCollider2D) -> u32 {
+    pub fn register_with_collider(&mut self, object: Status, limitations: Limitations, object_type: ObjectType, collider: CircleCollider2D) -> ID {
         let id = self.register(object, limitations, object_type);
         self.collider_map.insert(id, collider);
         id
     }
 
-    pub fn register_cannon(&mut self, id: u32, cannon: Cannon) {
+    pub fn register_cannon(&mut self, id: ID, cannon: Cannon) {
         self.cannon_map.insert(id, cannon);
         self.last_fired_map.insert(id, 0);
     }
 
-    pub fn check_collisions(&self) -> Vec<(u32, u32)> {
+    pub fn check_collisions(&self) -> Vec<(ID, ID)> {
         let mut result = HashSet::new();
         for (id1, collider1) in &self.collider_map {
             let s_position = self.status_map.get(id1).unwrap().position();
