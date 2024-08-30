@@ -10,6 +10,12 @@ pub trait Paintable {
     fn paint(&self, buffer: &mut Buffer);
 }
 
+pub enum Color {
+    BLUE,
+    GREEN,
+    RED,
+}
+
 impl Buffer {
     pub fn new(width: usize, height: usize) -> Self {
         Buffer {
@@ -24,9 +30,17 @@ impl Buffer {
         (r << 16) | (g << 8) | b
     }
 
+    fn from_color(color: Color) -> u32 {
+        match color {
+            Color::BLUE => Self::from_u8_rgb(0, 0, 127),
+            Color::GREEN => Self::from_u8_rgb(0, 127, 0),
+            Color::RED => Self::from_u8_rgb(127, 0, 0),
+        }
+    }
+
     pub fn paint_pixel(&mut self, position: Vector) {
         if position.x < self.width as i32 && position.y < self.height as i32 && 0 <= position.x && 0 <= position.y {
-            self.buffer[(position.x as usize) + (position.y as usize) * self.width] = Self::from_u8_rgb(128, 0, 0);
+            self.buffer[(position.x as usize) + (position.y as usize) * self.width] = Self::from_color(Color::GREEN);
         }
     }
 }
