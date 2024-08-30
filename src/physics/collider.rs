@@ -6,7 +6,7 @@ pub trait Collider<T> {
 
 #[derive(Clone)]
 pub struct CircleCollider2D {
-    radius: u32,
+    pub(crate) radius: u32,
 }
 
 impl CircleCollider2D {

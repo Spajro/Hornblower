@@ -126,7 +126,7 @@ impl Engine {
                     }
                     self.last_fired_map.insert(*id, self.last_tick);
 
-                    let position = status.position() + direction * 10;
+                    let position = status.position() + direction * cannon.missile_collider.radius as i64;
                     let speed = direction * cannon.missile_limit.speed() as i64;
                     let missile = Status::with_position_and_speed(position, speed);
                     self.register_with_collider(missile, cannon.missile_limit.clone(), ObjectType::MISSILE, cannon.missile_collider.clone());
