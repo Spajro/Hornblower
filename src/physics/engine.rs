@@ -12,7 +12,6 @@ use crate::physics::id::IdFactory;
 use crate::physics::limitations::Limitations;
 use crate::physics::normalized2d::Normalized2D;
 use crate::physics::status::Status;
-use crate::physics::vector2d::Vector2D;
 
 pub struct Engine {
     id_factory: IdFactory,
@@ -72,9 +71,9 @@ impl Engine {
         return id;
     }
 
-    pub fn register_with_collider(&mut self, object: Status, limitations: Limitations, object_type: ObjectType, collider: CircleCollider2D)->u32 {
-        let id=self.register(object,limitations,object_type);
-        self.collider_map.insert(id,collider);
+    pub fn register_with_collider(&mut self, object: Status, limitations: Limitations, object_type: ObjectType, collider: CircleCollider2D) -> u32 {
+        let id = self.register(object, limitations, object_type);
+        self.collider_map.insert(id, collider);
         id
     }
 
@@ -103,15 +102,6 @@ impl Engine {
             .collect()
     }
 
-    pub fn accelerate(&mut self, id: u32, acceleration: Vector2D) {
-        let mut status = self.status_map.get_mut(&id).unwrap();
-        status.accelerate(acceleration);
-    }
-
-    pub fn set_scale(&mut self, scale: u32) {
-        self.scale = scale
-    }
-
     pub fn handle_events(&mut self, events: Vec<Event>) {
         events.iter().for_each(|e|
             match e {
@@ -133,7 +123,7 @@ impl Engine {
                     let position = status.position() + direction * 10;
                     let speed = direction * cannon.missile_limit.speed() as i64;
                     let missile = Status::with_position_and_speed(position, speed);
-                    self.register_with_collider(missile, cannon.missile_limit.clone(), ObjectType::MISSILE,cannon.missile_collider.clone());
+                    self.register_with_collider(missile, cannon.missile_limit.clone(), ObjectType::MISSILE, cannon.missile_collider.clone());
                 }
             }
         )
@@ -144,21 +134,19 @@ impl Display for Engine {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         Ok(
             for (id, status) in &self.status_map {
-                write!(f, "{} : {}\n", id, status);
+                write!(f, "{} : {}\n", id, status).unwrap();
             })
     }
 }
 
 impl Paintable for Engine {
     fn paint(&self, buffer: &mut Buffer) {
-        let width = buffer.width;
-        let height = buffer.height;
         self.status_map.iter()
             .for_each(|(id, status)|
                 {
                     let center = Point::new(
-                        ((status.position().x as f32 / self.scale as f32) + ((width / 2) as f32)) as u32,
-                        ((status.position().y as f32 / self.scale as f32) + ((height / 2) as f32)) as u32);
+                        ((status.position().x as f32 / self.scale as f32) + ((buffer.width / 2) as f32)) as u32,
+                        ((status.position().y as f32 / self.scale as f32) + ((buffer.height / 2) as f32)) as u32);
                     let direction = Vector::new(status.speed().x as i32, status.speed().y as i32).normalize();
                     match self.object_type_map.get(id).unwrap() {
                         ObjectType::SHIP => {
