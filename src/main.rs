@@ -48,19 +48,28 @@ fn main() {
             engine.handle_events(interface.handle_click(click, id));
         }
 
+        let now_update = Instant::now();
         engine.update();
+        let elapsed_update = now_update.elapsed();
         let collisions = engine.check_collisions();
         if !collisions.is_empty() {
             let collision = collisions.first().unwrap();
             println!("COLLISION {} {}", collision.0, collision.1);
         };
 
+
+        let now_paint = Instant::now();
         let mut buffer = Buffer::new(WIDTH, HEIGHT);
         engine.paint(&mut buffer);
         interface.paint(&mut buffer);
+        let elapsed_paint = now_paint.elapsed();
 
         let elapsed_time = now.elapsed();
-        //println!("Time per frame:{} , fps:{}", elapsed_time.as_nanos(), Duration::from_secs(1).as_nanos() / elapsed_time.as_nanos());
+        println!("Tpf:{}, Tpu:{}, Tpp:{}, fps:{}",
+                 elapsed_time.as_micros(),
+                 elapsed_update.as_micros(),
+                 elapsed_paint.as_micros(),
+                 Duration::from_secs(1).as_nanos() / elapsed_time.as_nanos());
 
         window
             .update_with_buffer(&buffer.buffer, buffer.width, buffer.height)
