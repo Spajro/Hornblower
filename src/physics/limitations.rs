@@ -1,6 +1,8 @@
 use crate::physics::status::Status;
 use crate::physics::vector2d::Vector2D;
 
+
+#[derive(Clone)]
 pub struct Limitations {
     acceleration: u64,
     speed: u64,

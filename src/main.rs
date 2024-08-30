@@ -5,6 +5,7 @@ use minifb::{Key, MouseButton, MouseMode, Window, WindowOptions};
 use crate::game::interface::Interface;
 use crate::graphics::buffer::{Buffer, Paintable};
 use crate::gui::click::{Click, ClickHandler};
+use crate::physics::cannon::Cannon;
 use crate::physics::collider::CircleCollider2D;
 use crate::physics::engine::{Engine, ObjectType};
 use crate::physics::limitations::Limitations;
@@ -34,8 +35,8 @@ fn main() {
 
     let status = Status::with_position(Vector2D::new(100, 100));
     let limit = Limitations::new(100, 100);
-    let id = engine.register(status, limit,ObjectType::SHIP);
-    engine.register_collider(id, CircleCollider2D::new(20));
+    let id = engine.register_with_collider(status, limit, ObjectType::SHIP, CircleCollider2D::new(20));
+    engine.register_cannon(id, Cannon::new(Limitations::new(0, 500), CircleCollider2D::new(50), FRAME_RATE * 3));
 
     let mut interface = Interface::new(HEIGHT as u32, WIDTH as u32, SCALE);
     while window.is_open() && !window.is_key_down(Key::Escape) {
@@ -59,7 +60,7 @@ fn main() {
         interface.paint(&mut buffer);
 
         let elapsed_time = now.elapsed();
-        println!("Time per frame:{} , fps:{}", elapsed_time.as_nanos(), Duration::from_secs(1).as_nanos() / elapsed_time.as_nanos());
+        //println!("Time per frame:{} , fps:{}", elapsed_time.as_nanos(), Duration::from_secs(1).as_nanos() / elapsed_time.as_nanos());
 
         window
             .update_with_buffer(&buffer.buffer, buffer.width, buffer.height)

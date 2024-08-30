@@ -7,6 +7,7 @@ use crate::graphics::shapes::directed_triangle::DirectedTriangle;
 use crate::graphics::point::Point;
 use crate::graphics::shapes::circle_with_radius::CircleWithRadius;
 use crate::graphics::vector::Vector;
+use crate::physics::cannon::Cannon;
 use crate::physics::id::IdFactory;
 use crate::physics::limitations::Limitations;
 use crate::physics::normalized2d::Normalized2D;
@@ -19,7 +20,10 @@ pub struct Engine {
     collider_map: HashMap<u32, CircleCollider2D>,
     limitations_map: HashMap<u32, Limitations>,
     object_type_map: HashMap<u32, ObjectType>,
+    cannon_map: HashMap<u32, Cannon>,
+    last_fired_map: HashMap<u32, u32>,
     tick_rate: u32,
+    last_tick: u32,
     scale: u32,
 }
 
@@ -42,7 +46,10 @@ impl Engine {
             collider_map: HashMap::new(),
             limitations_map: HashMap::new(),
             object_type_map: HashMap::new(),
+            cannon_map: HashMap::new(),
+            last_fired_map: HashMap::new(),
             tick_rate,
+            last_tick: 0,
             scale,
         }
     }
@@ -55,6 +62,7 @@ impl Engine {
                     limit.adjust_to_valid(status)
                 }
             });
+        self.last_tick += 1;
     }
     pub fn register(&mut self, object: Status, limitations: Limitations, object_type: ObjectType) -> u32 {
         let id = self.id_factory.next();
@@ -64,8 +72,15 @@ impl Engine {
         return id;
     }
 
-    pub fn register_collider(&mut self, id: u32, collider: CircleCollider2D) {
-        self.collider_map.insert(id, collider);
+    pub fn register_with_collider(&mut self, object: Status, limitations: Limitations, object_type: ObjectType, collider: CircleCollider2D)->u32 {
+        let id=self.register(object,limitations,object_type);
+        self.collider_map.insert(id,collider);
+        id
+    }
+
+    pub fn register_cannon(&mut self, id: u32, cannon: Cannon) {
+        self.cannon_map.insert(id, cannon);
+        self.last_fired_map.insert(id, 0);
     }
 
     pub fn check_collisions(&self) -> Vec<(u32, u32)> {
@@ -108,10 +123,17 @@ impl Engine {
                 Event::Scale(scale) => { self.scale = *scale }
                 Event::Fire(id, direction) => {
                     let status = self.status_map.get_mut(id).unwrap();
+                    let cannon = self.cannon_map.get(id).unwrap();
+                    let last_fired = self.last_fired_map.get(id).unwrap();
+                    if last_fired + cannon.reload_time > self.last_tick {
+                        return;
+                    }
+                    self.last_fired_map.insert(*id, self.last_tick);
+
                     let position = status.position() + direction * 10;
-                    let speed = direction * 1000;
+                    let speed = direction * cannon.missile_limit.speed() as i64;
                     let missile = Status::with_position_and_speed(position, speed);
-                    self.register(missile, Limitations::new(0, 1000), ObjectType::MISSILE);
+                    self.register_with_collider(missile, cannon.missile_limit.clone(), ObjectType::MISSILE,cannon.missile_collider.clone());
                 }
             }
         )
