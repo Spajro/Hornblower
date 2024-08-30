@@ -8,6 +8,7 @@ use crate::graphics::point::Point;
 use crate::graphics::shapes::circle_with_radius::CircleWithRadius;
 use crate::graphics::vector::Vector;
 use crate::physics::cannon::Cannon;
+use crate::physics::float_vector2d::FloatVector2D;
 use crate::physics::id::IdFactory;
 use crate::physics::limitations::Limitations;
 use crate::physics::normalized2d::Normalized2D;
@@ -16,6 +17,7 @@ use crate::physics::status::Status;
 pub struct Engine {
     id_factory: IdFactory,
     status_map: HashMap<u32, Status>,
+    carry_map: HashMap<u32, FloatVector2D>,
     collider_map: HashMap<u32, CircleCollider2D>,
     limitations_map: HashMap<u32, Limitations>,
     object_type_map: HashMap<u32, ObjectType>,
@@ -42,6 +44,7 @@ impl Engine {
         Engine {
             id_factory: IdFactory::new(),
             status_map: HashMap::new(),
+            carry_map: HashMap::new(),
             collider_map: HashMap::new(),
             limitations_map: HashMap::new(),
             object_type_map: HashMap::new(),
@@ -55,7 +58,9 @@ impl Engine {
     pub fn update(&mut self) {
         self.status_map.iter_mut()
             .for_each(|(id, status)| {
-                status.update(self.tick_rate);
+                let old_carry = self.carry_map.get(id).unwrap();
+                let new_carry = status.update(old_carry, self.tick_rate);
+                self.carry_map.insert(*id, new_carry);
                 let limit = self.limitations_map.get(id).unwrap();
                 if !limit.validate(status) {
                     limit.adjust_to_valid(status)
@@ -66,6 +71,7 @@ impl Engine {
     pub fn register(&mut self, object: Status, limitations: Limitations, object_type: ObjectType) -> u32 {
         let id = self.id_factory.next();
         self.status_map.insert(id, object);
+        self.carry_map.insert(id, FloatVector2D::new(0.0, 0.0));
         self.limitations_map.insert(id, limitations);
         self.object_type_map.insert(id, object_type);
         return id;
@@ -150,13 +156,13 @@ impl Paintable for Engine {
                     let direction = Vector::new(status.speed().x as i32, status.speed().y as i32).normalize();
                     match self.object_type_map.get(id).unwrap() {
                         ObjectType::SHIP => {
-                            match DirectedTriangle::equilateral(center, direction, 20,Color::GREEN) {
+                            match DirectedTriangle::equilateral(center, direction, 20, Color::GREEN) {
                                 Ok(t) => t.paint(buffer),
                                 Err(_) => {}
                             }
                         }
                         ObjectType::MISSILE => {
-                            CircleWithRadius::new(center, 5, direction,Color::BLUE).paint(buffer);
+                            CircleWithRadius::new(center, 5, direction, Color::BLUE).paint(buffer);
                         }
                     }
                 }

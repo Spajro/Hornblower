@@ -1,4 +1,5 @@
 use std::fmt::{Display, Formatter};
+use crate::physics::float_vector2d::FloatVector2D;
 use crate::physics::vector2d::Vector2D;
 
 pub struct Status {
@@ -35,10 +36,10 @@ impl Status {
         self.acceleration = acceleration;
     }
 
-    pub fn update(&mut self, tick_rate: u32) {
-        let percent = 1.0 / (tick_rate as f32);
-        self.position += self.speed * percent;
-        self.speed += self.acceleration * percent;
+    pub fn update(&mut self, carry: &FloatVector2D, tick_rate: u32) -> FloatVector2D {
+        let percent = 1.0 / (tick_rate as f64);
+        self.position.add_assign_with_carry(self.speed * percent, carry);
+        self.speed.add_assign_with_carry(self.acceleration * percent, carry)
     }
 
     pub fn position(&self) -> Vector2D {

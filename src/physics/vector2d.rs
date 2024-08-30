@@ -1,5 +1,6 @@
 use std::fmt::Display;
 use std::ops;
+use crate::physics::float_vector2d::FloatVector2D;
 use crate::physics::normalized2d::Normalized2D;
 
 #[derive(Copy, Clone)]
@@ -26,6 +27,13 @@ impl Vector2D {
 
     pub fn distance(&self, other: &Vector2D) -> f64 {
         (((self.x - other.x).pow(2) + (self.y - other.y).pow(2)) as f64).sqrt()
+    }
+
+    pub fn add_assign_with_carry(&mut self, rhs: FloatVector2D, carry: &FloatVector2D) -> FloatVector2D {
+        let t = rhs + carry;
+        self.x += t.x.floor() as i64;
+        self.y += t.y.floor() as i64;
+        FloatVector2D::new(t.x - t.x.floor(), t.y - t.y.floor())
     }
 }
 
@@ -58,13 +66,13 @@ impl ops::Mul<i64> for Vector2D {
     }
 }
 
-impl ops::Mul<f32> for Vector2D {
-    type Output = Vector2D;
+impl ops::Mul<f64> for Vector2D {
+    type Output = FloatVector2D;
 
-    fn mul(self, rhs: f32) -> Self::Output {
-        Vector2D {
-            x: (self.x as f32 * rhs) as i64,
-            y: (self.y as f32 * rhs) as i64,
+    fn mul(self, rhs: f64) -> Self::Output {
+        FloatVector2D {
+            x: self.x as f64 * rhs,
+            y: self.y as f64 * rhs,
         }
     }
 }
