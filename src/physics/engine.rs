@@ -2,7 +2,7 @@ use std::collections::{HashMap, HashSet};
 use std::fmt::{Display, Formatter};
 
 use crate::physics::collider::{CircleCollider2D, Collider};
-use crate::graphics::buffer::{Buffer, Paintable};
+use crate::graphics::buffer::{Buffer, Color, Paintable};
 use crate::graphics::shapes::directed_triangle::DirectedTriangle;
 use crate::graphics::point::Point;
 use crate::graphics::shapes::circle_with_radius::CircleWithRadius;
@@ -150,13 +150,13 @@ impl Paintable for Engine {
                     let direction = Vector::new(status.speed().x as i32, status.speed().y as i32).normalize();
                     match self.object_type_map.get(id).unwrap() {
                         ObjectType::SHIP => {
-                            match DirectedTriangle::equilateral(center, direction, 20) {
+                            match DirectedTriangle::equilateral(center, direction, 20,Color::GREEN) {
                                 Ok(t) => t.paint(buffer),
                                 Err(_) => {}
                             }
                         }
                         ObjectType::MISSILE => {
-                            CircleWithRadius::new(center, 5, direction).paint(buffer);
+                            CircleWithRadius::new(center, 5, direction,Color::BLUE).paint(buffer);
                         }
                     }
                 }

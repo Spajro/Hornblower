@@ -1,4 +1,4 @@
-use crate::graphics::buffer::{Buffer, Paintable};
+use crate::graphics::buffer::{Buffer, Color, Paintable};
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
 use crate::gui::button::Button;
@@ -11,18 +11,18 @@ pub struct PlusMinus {
 }
 
 impl PlusMinus {
-    pub fn new(center: Point, size: u32, direction: Normalized, initial_value: i32) -> Self {
+    pub fn new(center: Point, size: u32, direction: Normalized, initial_value: i32, color: Color) -> Self {
         let half_size = size / 2;
         let left_center = Point::new(center.x - half_size, center.y);
         let right_center = Point::new(center.x + half_size, center.y);
         PlusMinus {
-            plus: Button::with_plus(left_center, half_size),
-            minus: Button::with_minus(right_center, half_size),
+            plus: Button::with_plus(left_center, half_size, color),
+            minus: Button::with_minus(right_center, half_size, color),
             value: initial_value,
         }
     }
 
-    pub fn get_value(&self)->i32{
+    pub fn get_value(&self) -> i32 {
         self.value
     }
 }

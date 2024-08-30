@@ -1,4 +1,4 @@
-use crate::graphics::buffer::{Buffer, Paintable};
+use crate::graphics::buffer::{Buffer, Color, Paintable};
 use crate::graphics::figure::Figure;
 use crate::graphics::line::Line;
 use crate::graphics::normalized::Normalized;
@@ -15,7 +15,7 @@ pub struct Button {
 }
 
 impl Button {
-    pub fn new(center: Point, size: u32) -> Self {
+    pub fn new(center: Point, size: u32, color: Color) -> Self {
         Button {
             area: Area::new(
                 center.x - (size / 2),
@@ -24,13 +24,13 @@ impl Button {
                 center.y + (size / 2),
             ),
             figure: Figure::new()
-                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), 2 * size)))
-                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), (1.8 * size as f32) as u32))),
+                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), 2 * size, color)))
+                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), (1.8 * size as f32) as u32, color))),
             click: false,
         }
     }
 
-    pub fn with_plus(center: Point, size: u32) -> Self {
+    pub fn with_plus(center: Point, size: u32, color: Color) -> Self {
         let half_size = size / 2;
         Button {
             area: Area::new(
@@ -40,15 +40,15 @@ impl Button {
                 center.y + (size / 2),
             ),
             figure: Figure::new()
-                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), 2 * size)))
-                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), (1.8 * size as f32) as u32)))
-                .with(Box::new(Line::new(Point::new(center.x - half_size, center.y), Point::new(center.x + half_size, center.y))))
-                .with(Box::new(Line::new(Point::new(center.x, center.y - half_size), Point::new(center.x, center.y + half_size)))),
+                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), 2 * size, color)))
+                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), (1.8 * size as f32) as u32, color)))
+                .with(Box::new(Line::new(Point::new(center.x - half_size, center.y), Point::new(center.x + half_size, center.y), color)))
+                .with(Box::new(Line::new(Point::new(center.x, center.y - half_size), Point::new(center.x, center.y + half_size), color))),
             click: false,
         }
     }
 
-    pub fn with_minus(center: Point, size: u32) -> Self {
+    pub fn with_minus(center: Point, size: u32, color: Color) -> Self {
         let half_size = size / 2;
         Button {
             area: Area::new(
@@ -58,9 +58,9 @@ impl Button {
                 center.y + (size / 2),
             ),
             figure: Figure::new()
-                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), 2 * size)))
-                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), (1.8 * size as f32) as u32)))
-                .with(Box::new(Line::new(Point::new(center.x - half_size, center.y), Point::new(center.x + half_size, center.y)))),
+                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), 2 * size, color)))
+                .with(Box::new(Square::new(center, Normalized::new(0.0, -1.0), (1.8 * size as f32) as u32, color)))
+                .with(Box::new(Line::new(Point::new(center.x - half_size, center.y), Point::new(center.x + half_size, center.y), color))),
             click: false,
         }
     }

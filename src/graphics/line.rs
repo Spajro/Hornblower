@@ -1,17 +1,19 @@
-use crate::graphics::buffer::{Buffer, Paintable};
+use crate::graphics::buffer::{Buffer, Color, Paintable};
 use crate::graphics::point::Point;
 use crate::graphics::vector::Vector;
 
 pub struct Line {
     pub first: Point,
     pub second: Point,
+    pub color: Color,
 }
 
 impl Line {
-    pub fn new(first: Point, second: Point) -> Self {
+    pub fn new(first: Point, second: Point, color: Color) -> Self {
         Line {
             first,
             second,
+            color,
         }
     }
 
@@ -38,7 +40,7 @@ impl Paintable for Line {
                 lower = self.second;
             }
             for y in lower.y..greater.y + 1 {
-                buffer.paint_pixel(Vector::new(lower.x as i32, y as i32));
+                buffer.paint_pixel(Vector::new(lower.x as i32, y as i32), &self.color);
             }
         } else {
             let m = (distance.y as f32) / (distance.x as f32);
@@ -51,7 +53,7 @@ impl Paintable for Line {
             }
             for x in lower.x..greater.x + 1 {
                 let y = (m * ((x - lower.x) as f32) + (lower.y as f32)) as i32;
-                buffer.paint_pixel(Vector::new(x as i32, y));
+                buffer.paint_pixel(Vector::new(x as i32, y), &self.color);
             }
         }
     }

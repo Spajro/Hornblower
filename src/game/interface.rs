@@ -1,4 +1,4 @@
-use crate::graphics::buffer::{Buffer, Paintable};
+use crate::graphics::buffer::{Buffer, Color, Paintable};
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
 use crate::gui::button::Button;
@@ -22,12 +22,13 @@ impl Interface {
         let size = 40;
         let half_size = size / 2;
         let direction = Normalized::new(1.0, 0.0);
+        let color = Color::RED;
         Interface {
-            throttle: Throttle::new(Point::new(half_size, height - size), 2 * size, size),
-            compass: Compass::new(Point::new(2 * size, height - size), 2 * size),
-            zoom: PlusMinus::new(Point::new(size, half_size), size, direction, scale as i32),
-            fire_compass: Compass::new(Point::new(width - size, height - size), 2 * size),
-            fire_button: Button::new(Point::new(width - 3 * size, height - size), size),
+            throttle: Throttle::new(Point::new(half_size, height - size), 2 * size, size, color),
+            compass: Compass::new(Point::new(2 * size, height - size), 2 * size, color),
+            zoom: PlusMinus::new(Point::new(size, half_size), size, direction, scale as i32, color),
+            fire_compass: Compass::new(Point::new(width - size, height - size), 2 * size, color),
+            fire_button: Button::new(Point::new(width - 3 * size, height - size), size, color),
         }
     }
 

@@ -1,4 +1,4 @@
-use crate::graphics::buffer::{Buffer, Paintable};
+use crate::graphics::buffer::{Buffer, Color, Paintable};
 use crate::graphics::line::Line;
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
@@ -7,26 +7,28 @@ pub struct Triangle {
     pub first: Point,
     pub second: Point,
     pub third: Point,
+    pub color: Color,
 }
 
 impl Paintable for Triangle {
     fn paint(&self, buffer: &mut Buffer) {
-        Line::new(self.first, self.second).paint(buffer);
-        Line::new(self.second, self.third).paint(buffer);
-        Line::new(self.first, self.third).paint(buffer);
+        Line::new(self.first, self.second, self.color).paint(buffer);
+        Line::new(self.second, self.third, self.color).paint(buffer);
+        Line::new(self.first, self.third, self.color).paint(buffer);
     }
 }
 
 impl Triangle {
-    pub fn new(first: Point, second: Point, third: Point) -> Self {
+    pub fn new(first: Point, second: Point, third: Point, color: Color) -> Self {
         Triangle {
             first,
             second,
             third,
+            color,
         }
     }
 
-    pub fn equilateral(center: Point, direction: Normalized, length: u32) -> Result<Self, &'static str> {
+    pub fn equilateral(center: Point, direction: Normalized, length: u32, color: Color) -> Result<Self, &'static str> {
         let radius = ((length as f32) / 3_f32.sqrt()) as i32;
         let v = center.as_vector();
         let p1 = Point::from_vector(v + (direction * radius));
@@ -44,6 +46,7 @@ impl Triangle {
                 first: p1.unwrap(),
                 second: p2.unwrap(),
                 third: p3.unwrap(),
+                color,
             })
         };
     }

@@ -1,4 +1,4 @@
-use crate::graphics::buffer::{Buffer, Paintable};
+use crate::graphics::buffer::{Buffer, Color, Paintable};
 use crate::graphics::line::Line;
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
@@ -9,10 +9,11 @@ pub struct Square {
     y1: u32,
     y2: u32,
     direction: Normalized,
+    color: Color,
 }
 
 impl Square {
-    pub fn new(center: Point, direction: Normalized, length: u32) -> Self {
+    pub fn new(center: Point, direction: Normalized, length: u32,color: Color) -> Self {
         let half_length = length / 2;
         Square {
             x1: center.x - half_length,
@@ -20,6 +21,7 @@ impl Square {
             y1: center.y - half_length,
             y2: center.y + half_length,
             direction,
+            color,
         }
     }
 
@@ -43,9 +45,9 @@ impl Square {
 
 impl Paintable for Square {
     fn paint(&self, buffer: &mut Buffer) {
-        Line::new(self.get_first(), self.get_second()).paint(buffer);
-        Line::new(self.get_second(), self.get_third()).paint(buffer);
-        Line::new(self.get_third(), self.get_fourth()).paint(buffer);
-        Line::new(self.get_fourth(), self.get_first()).paint(buffer);
+        Line::new(self.get_first(), self.get_second(),self.color).paint(buffer);
+        Line::new(self.get_second(), self.get_third(),self.color).paint(buffer);
+        Line::new(self.get_third(), self.get_fourth(),self.color).paint(buffer);
+        Line::new(self.get_fourth(), self.get_first(),self.color).paint(buffer);
     }
 }

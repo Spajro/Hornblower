@@ -1,4 +1,4 @@
-use crate::graphics::buffer::{Buffer, Paintable};
+use crate::graphics::buffer::{Buffer, Color, Paintable};
 use crate::graphics::shapes::circle_with_radius::CircleWithRadius;
 use crate::graphics::normalized::Normalized;
 use crate::graphics::point::Point;
@@ -9,14 +9,16 @@ pub struct Compass {
     pub center: Point,
     pub size: u32,
     pub direction: Normalized,
+    pub color: Color,
 }
 
 impl Compass {
-    pub fn new(center: Point, size: u32) -> Self {
+    pub fn new(center: Point, size: u32, color: Color) -> Self {
         Compass {
             center,
             size,
             direction: Normalized::new(0.0, -1.0),
+            color,
         }
     }
 
@@ -27,10 +29,10 @@ impl Compass {
 
 impl ClickHandler for Compass {
     fn handle_click(&mut self, click: &Click) {
-        if click.x < self.center.x as u32 - (self.size / 2) ||
-            click.x > self.center.x as u32 + (self.size / 2) ||
-            click.y < self.center.y as u32 - (self.size / 2) ||
-            click.y > self.center.y as u32 + (self.size / 2)
+        if click.x < self.center.x - (self.size / 2) ||
+            click.x > self.center.x + (self.size / 2) ||
+            click.y < self.center.y - (self.size / 2) ||
+            click.y > self.center.y + (self.size / 2)
         {
             return;
         }
@@ -40,7 +42,7 @@ impl ClickHandler for Compass {
 
 impl Paintable for Compass {
     fn paint(&self, buffer: &mut Buffer) {
-        Square::new(self.center, Normalized::new(0.0, 1.0), self.size).paint(buffer);
-        CircleWithRadius::new(self.center, self.size / 2, self.direction).paint(buffer);
+        Square::new(self.center, Normalized::new(0.0, 1.0), self.size, self.color).paint(buffer);
+        CircleWithRadius::new(self.center, self.size / 2, self.direction, self.color).paint(buffer);
     }
 }
