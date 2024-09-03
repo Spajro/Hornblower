@@ -15,11 +15,11 @@ impl Vector2D {
     }
 
     pub fn length(&self) -> u64 {
-        ((self.x * self.x + self.y * self.y) as f64).sqrt() as u64
+        ((self.x.pow(2) + self.y.pow(2)) as f64).sqrt() as u64
     }
 
     pub fn normalize(&self) -> Normalized2D {
-        Normalized2D::new(self.x as f64 / self.length() as f64, self.y as f64 / self.length() as f64)
+        Normalized2D::from(self)
     }
 
     pub fn distance(&self, other: &Vector2D) -> f64 {

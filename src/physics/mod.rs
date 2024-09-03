@@ -6,4 +6,4 @@ pub mod vector2d;
 pub mod limitations;
 pub mod id;
 pub mod cannon;
-mod float_vector2d;
+pub mod float_vector2d;

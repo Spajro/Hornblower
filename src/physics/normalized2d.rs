@@ -1,4 +1,5 @@
 use std::ops;
+use crate::physics::float_vector2d::FloatVector2D;
 use crate::physics::vector2d::Vector2D;
 
 pub struct Normalized2D {
@@ -7,8 +8,18 @@ pub struct Normalized2D {
 }
 
 impl Normalized2D {
-    pub fn new(x: f64, y: f64) -> Self {
-        Normalized2D { x, y }
+    pub fn from(vector2d: &Vector2D) -> Self {
+        Normalized2D {
+            x: vector2d.x as f64 / vector2d.length() as f64,
+            y: vector2d.y as f64 / vector2d.length() as f64,
+        }
+    }
+
+    pub fn from_float(vector2d: &FloatVector2D) -> Self {
+        Normalized2D {
+            x: vector2d.x / vector2d.length(),
+            y: vector2d.y / vector2d.length(),
+        }
     }
 
     pub fn x(&self) -> f64 {

@@ -34,7 +34,7 @@ fn main() {
     window.set_target_fps(FRAME_RATE as usize);
 
     let status = Status::with_position(Vector2D::new(100, 100));
-    let limit = Limitations::new(100, 100);
+    let limit = Limitations::new(100, 1000);
     let id = engine.register_with_collider(status, limit, ObjectType::SHIP, CircleCollider2D::new(20));
     engine.register_cannon(id, Cannon::new(Limitations::new(0, 500), CircleCollider2D::new(50), FRAME_RATE * 3));
 

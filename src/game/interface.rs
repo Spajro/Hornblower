@@ -7,6 +7,7 @@ use crate::gui::compass::Compass;
 use crate::gui::plus_minus::PlusMinus;
 use crate::gui::throttle::Throttle;
 use crate::physics::engine::Event;
+use crate::physics::float_vector2d::FloatVector2D;
 use crate::physics::id::ID;
 use crate::physics::normalized2d::Normalized2D;
 
@@ -34,7 +35,7 @@ impl Interface {
     }
 
     fn normalized_to_normalized2d(normalized: Normalized) -> Normalized2D {
-        Normalized2D::new(normalized.x as f64, normalized.y as f64)
+        FloatVector2D::new(normalized.x as f64, normalized.y as f64).normalize()
     }
 
     pub fn handle_click(&mut self, click: &Click, id: ID) -> Vec<Event> {
