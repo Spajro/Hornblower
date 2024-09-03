@@ -19,10 +19,7 @@ impl Vector2D {
     }
 
     pub fn normalize(&self) -> Normalized2D {
-        Normalized2D {
-            x: self.x as f64 / self.length() as f64,
-            y: self.y as f64 / self.length() as f64,
-        }
+        Normalized2D::new(self.x as f64 / self.length() as f64, self.y as f64 / self.length() as f64)
     }
 
     pub fn distance(&self, other: &Vector2D) -> f64 {
