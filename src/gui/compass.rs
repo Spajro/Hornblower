@@ -36,7 +36,7 @@ impl ClickHandler for Compass {
         {
             return;
         }
-        self.direction = (click.as_vector() - self.center.as_vector()).normalize();
+        self.direction = (click.as_vector() - self.center.as_vector()).normalize().unwrap_or(self.direction);
     }
 }
 

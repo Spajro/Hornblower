@@ -20,10 +20,15 @@ impl Vector {
         ((self.x.pow(2) + self.y.pow(2)) as f32).sqrt()
     }
 
-    pub fn normalize(self) -> Normalized {
-        Normalized {
-            x: self.x as f32 / self.length() as f32,
-            y: self.y as f32 / self.length() as f32,
+    pub fn normalize(self) -> Option<Normalized> {
+        let length = self.length();
+        if length == 0.0 {
+            None
+        } else {
+            Some(Normalized {
+                x: self.x as f32 / self.length() as f32,
+                y: self.y as f32 / self.length() as f32,
+            })
         }
     }
 
@@ -63,7 +68,7 @@ impl ops::Div<i32> for Vector {
     fn div(self, rhs: i32) -> Self::Output {
         Vector {
             x: self.x / rhs,
-            y: self.y /rhs,
+            y: self.y / rhs,
         }
     }
 }
@@ -72,10 +77,10 @@ impl Mul<f32> for Vector {
     type Output = Vector;
 
     fn mul(self, rhs: f32) -> Self::Output {
-       Vector{
-           x: (self.x as f32 * rhs) as i32,
-           y: (self.y as f32 * rhs) as i32,
-       }
+        Vector {
+            x: (self.x as f32 * rhs) as i32,
+            y: (self.y as f32 * rhs) as i32,
+        }
     }
 }
 

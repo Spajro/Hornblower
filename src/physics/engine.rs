@@ -3,6 +3,7 @@ use std::fmt::{Display, Formatter};
 
 use crate::physics::collider::{CircleCollider2D, Collider};
 use crate::graphics::buffer::{Buffer, Color, Paintable};
+use crate::graphics::normalized::Normalized;
 use crate::graphics::shapes::directed_triangle::DirectedTriangle;
 use crate::graphics::point::Point;
 use crate::graphics::shapes::circle_with_radius::CircleWithRadius;
@@ -153,7 +154,7 @@ impl Paintable for Engine {
                     let center = Point::new(
                         ((status.position().x as f32 / self.scale as f32) + ((buffer.width / 2) as f32)) as u32,
                         ((status.position().y as f32 / self.scale as f32) + ((buffer.height / 2) as f32)) as u32);
-                    let direction = Vector::new(status.speed().x as i32, status.speed().y as i32).normalize();
+                    let direction = Vector::new(status.speed().x as i32, status.speed().y as i32).normalize().unwrap_or(Normalized::new(0.0,-1.0));
                     match self.object_type_map.get(id).unwrap() {
                         ObjectType::SHIP => {
                             match DirectedTriangle::equilateral(center, direction, 20, Color::GREEN) {
