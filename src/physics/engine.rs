@@ -1,14 +1,8 @@
 use std::collections::{HashMap, HashSet};
 use std::fmt::{Display, Formatter};
 
-use crate::physics::collider::{CircleCollider2D, Collider};
-use crate::graphics::buffer::{Buffer, Color, Paintable};
-use crate::graphics::normalized::Normalized;
-use crate::graphics::shapes::directed_triangle::DirectedTriangle;
-use crate::graphics::point::Point;
-use crate::graphics::shapes::circle_with_radius::CircleWithRadius;
-use crate::graphics::vector::Vector;
 use crate::physics::cannon::Cannon;
+use crate::physics::collider::{CircleCollider2D, Collider};
 use crate::physics::float_vector2d::FloatVector2D;
 use crate::physics::id::{ID, IdFactory};
 use crate::physics::limitations::Limitations;
@@ -35,6 +29,7 @@ pub enum Event {
     Fire(ID, Normalized2D),
 }
 
+#[derive(Copy,Clone)]
 pub enum ObjectType {
     SHIP,
     MISSILE,
@@ -135,6 +130,17 @@ impl Engine {
             }
         )
     }
+
+    pub fn get_renderable(&self) -> Vec<(ObjectType, &Status)> {
+        self.status_map.iter()
+            .map(|(id, status)| (*self.object_type_map.get(id).unwrap(), status))
+            .collect()
+    }
+
+
+    pub fn scale(&self) -> u32 {
+        self.scale
+    }
 }
 
 impl Display for Engine {
@@ -143,30 +149,5 @@ impl Display for Engine {
             for (id, status) in &self.status_map {
                 write!(f, "{} : {}\n", id, status).unwrap();
             })
-    }
-}
-
-impl Paintable for Engine {
-    fn paint(&self, buffer: &mut Buffer) {
-        self.status_map.iter()
-            .for_each(|(id, status)|
-                {
-                    let center = Point::new(
-                        ((status.position().x as f32 / self.scale as f32) + ((buffer.width / 2) as f32)) as u32,
-                        ((status.position().y as f32 / self.scale as f32) + ((buffer.height / 2) as f32)) as u32);
-                    let direction = Vector::new(status.speed().x as i32, status.speed().y as i32).normalize().unwrap_or(Normalized::new(0.0,-1.0));
-                    match self.object_type_map.get(id).unwrap() {
-                        ObjectType::SHIP => {
-                            match DirectedTriangle::equilateral(center, direction, 20, Color::GREEN) {
-                                Ok(t) => t.paint(buffer),
-                                Err(_) => {}
-                            }
-                        }
-                        ObjectType::MISSILE => {
-                            CircleWithRadius::new(center, 5, direction, Color::BLUE).paint(buffer);
-                        }
-                    }
-                }
-            );
     }
 }

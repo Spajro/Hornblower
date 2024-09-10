@@ -3,8 +3,9 @@ use std::time::{Duration, Instant};
 use minifb::{Key, MouseButton, MouseMode, Window, WindowOptions};
 
 use crate::game::interface::Interface;
+use crate::game::render::Renderer;
 use crate::graphics::buffer::{Buffer, Paintable};
-use crate::gui::click::{Click, ClickHandler};
+use crate::gui::click::Click;
 use crate::physics::cannon::Cannon;
 use crate::physics::collider::CircleCollider2D;
 use crate::physics::engine::{Engine, ObjectType};
@@ -25,6 +26,7 @@ fn main() {
     const SCALE: u32 = 10;
 
     let mut engine = Engine::new(FRAME_RATE, SCALE);
+    let mut renderer=Renderer::new();
     let mut window = Window::new(
         "Test - ESC to exit",
         WIDTH,
@@ -60,7 +62,7 @@ fn main() {
 
         let now_paint = Instant::now();
         let mut buffer = Buffer::new(WIDTH, HEIGHT);
-        engine.paint(&mut buffer);
+        renderer.render(engine.get_renderable(),engine.scale(),&mut buffer);
         interface.paint(&mut buffer);
         let elapsed_paint = now_paint.elapsed();
 
