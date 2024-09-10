@@ -1,13 +1,13 @@
 use std::collections::{HashMap, HashSet};
 use std::fmt::{Display, Formatter};
 
-use crate::physics::cannon::Cannon;
-use crate::physics::collider::{CircleCollider2D, Collider};
-use crate::physics::float_vector2d::FloatVector2D;
-use crate::physics::id::{ID, IdFactory};
-use crate::physics::limitations::Limitations;
-use crate::physics::normalized2d::Normalized2D;
-use crate::physics::status::Status;
+use crate::engine::cannon::Cannon;
+use crate::engine::physics::{CircleCollider2D, Collider};
+use crate::engine::math::FloatVector2D;
+use crate::engine::id::{ID, IdFactory};
+use crate::engine::physics::Limitations;
+use crate::engine::math::Normalized2D;
+use crate::engine::physics::Status;
 
 pub struct Engine {
     id_factory: IdFactory,

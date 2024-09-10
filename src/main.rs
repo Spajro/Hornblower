@@ -6,15 +6,15 @@ use crate::game::interface::Interface;
 use crate::game::render::Renderer;
 use crate::graphics::buffer::{Buffer, Paintable};
 use crate::gui::click::Click;
-use crate::physics::cannon::Cannon;
-use crate::physics::collider::CircleCollider2D;
-use crate::physics::engine::{Engine, ObjectType};
-use crate::physics::limitations::Limitations;
-use crate::physics::status::Status;
-use crate::physics::vector2d::Vector2D;
+use crate::engine::cannon::Cannon;
+use engine::physics::CircleCollider2D;
+use crate::engine::engine::{Engine, ObjectType};
+use engine::physics::Limitations;
+use crate::engine::physics::Status;
+use crate::engine::math::Vector2D;
 
 mod graphics;
-mod physics;
+mod engine;
 mod gui;
 mod game;
 

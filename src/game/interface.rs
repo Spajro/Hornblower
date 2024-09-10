@@ -6,10 +6,10 @@ use crate::gui::click::{Click, ClickHandler};
 use crate::gui::compass::Compass;
 use crate::gui::plus_minus::PlusMinus;
 use crate::gui::throttle::Throttle;
-use crate::physics::engine::Event;
-use crate::physics::float_vector2d::FloatVector2D;
-use crate::physics::id::ID;
-use crate::physics::normalized2d::Normalized2D;
+use crate::engine::engine::Event;
+use crate::engine::math::FloatVector2D;
+use crate::engine::id::ID;
+use crate::engine::math::Normalized2D;
 
 pub struct Interface {
     throttle: Throttle,

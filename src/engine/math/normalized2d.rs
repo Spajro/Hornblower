@@ -1,6 +1,6 @@
 use std::ops;
-use crate::physics::float_vector2d::FloatVector2D;
-use crate::physics::vector2d::Vector2D;
+use crate::engine::math::FloatVector2D;
+use crate::engine::math::Vector2D;
 
 pub struct Normalized2D {
     x: f64,

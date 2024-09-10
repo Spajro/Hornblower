@@ -1,7 +1,7 @@
 use std::fmt::Display;
 use std::ops;
-use crate::physics::float_vector2d::FloatVector2D;
-use crate::physics::normalized2d::Normalized2D;
+use crate::engine::math::float_vector2d::FloatVector2D;
+use crate::engine::math::normalized2d::Normalized2D;
 
 #[derive(Copy, Clone)]
 pub struct Vector2D {

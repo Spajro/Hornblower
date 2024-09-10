@@ -1,4 +1,4 @@
-use crate::physics::vector2d::Vector2D;
+use crate::engine::math::Vector2D;
 
 pub trait Collider<T> {
     fn collide(&self, t: &T, s_position: &Vector2D, t_position: &Vector2D) -> bool;

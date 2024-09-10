@@ -4,8 +4,8 @@ use crate::graphics::point::Point;
 use crate::graphics::shapes::circle_with_radius::CircleWithRadius;
 use crate::graphics::shapes::directed_triangle::DirectedTriangle;
 use crate::graphics::vector::Vector;
-use crate::physics::engine::ObjectType;
-use crate::physics::status::Status;
+use crate::engine::engine::ObjectType;
+use crate::engine::physics::Status;
 
 pub struct Renderer {}
 

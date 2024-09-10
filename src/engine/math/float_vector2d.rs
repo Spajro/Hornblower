@@ -1,5 +1,5 @@
 use std::ops;
-use crate::physics::normalized2d::Normalized2D;
+use crate::engine::math::normalized2d::Normalized2D;
 
 pub struct FloatVector2D {
     pub x: f64,

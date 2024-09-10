@@ -1,5 +1,5 @@
-use crate::physics::status::Status;
-use crate::physics::vector2d::Vector2D;
+use crate::engine::physics::Status;
+use crate::engine::math::Vector2D;
 
 
 #[derive(Clone)]
